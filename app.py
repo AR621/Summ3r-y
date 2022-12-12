@@ -6,7 +6,8 @@ import text_examples
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
-partitioned_prompt = [text_examples.qchnn_good, text_examples.qchnn_bad, text_examples.qchnn_end]
+partitioned_prompt = [text_examples.qchnn_good,
+                      text_examples.qchnn_bad, text_examples.qchnn_end]
 
 
 @app.route("/", methods=("GET", "POST"))
@@ -48,6 +49,18 @@ def index():
     return render_template("index.html", result=result, formatted_result=reformatted_result)
 
 
+@app.route("/new_index")
+def new_index():
+
+    return render_template("new_index.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/example")
+def example():
+    return render_template("example.html")
 def summarize_prompt(prompt):
     # return """Suggest three names for a prompt that is a superhero.
     return """Could you precisely summarize this video? 

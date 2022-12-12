@@ -1,0 +1,24 @@
+/* https://coolors.co/f5f0e8-9fc6d3-897f9e-d2bec1-b8a5f2 */
+
+#headlinetext{
+    font-family: 'VT323', monospace;
+    font-size: 210px;
+    padding-left: 18px;
+}
+
+#navbarNav{
+    font-family: 'VT323', monospace;
+    font-size: 40px;
+    background-color: #F5F0E8;
+}
+
+p{
+    font-family: 'Arvo', serif;
+    padding-left: 18px;
+}
+
+.thebigtext{
+    font-size: 100px;
+    font-family: 'VT323', monospace;
+    padding-left: 18px;
+}
