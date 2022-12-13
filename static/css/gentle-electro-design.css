@@ -1,0 +1,64 @@
+/* https://coolors.co/f5f0e8-9fc6d3-897f9e-d2bec1-b8a5f2 */
+
+#headlinetext {
+    font-family: 'VT323', monospace;
+    font-size: 210px;
+    padding-left: 18px;
+    text-align: justify;
+    display: inline-block;
+
+}
+
+#navbarNav {
+    font-family: 'VT323', monospace;
+    font-size: 40px;
+    background-color: #F5F0E8;
+    /* display: flex; */
+}
+
+p {
+    font-family: 'Arvo', serif;
+    /* padding-left: 18px; */
+    text-align: justify;
+}
+
+.thebigtext {
+    font-size: 100px;
+    font-family: 'VT323', monospace;
+    padding-left: 18px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-label {
+    font-family: 'Arvo', serif;
+}
+
+.form-control {
+    font-family: 'Arvo', serif;
+}
+
+#Summar-z3 {
+    font-family: 'VT323', monospace;
+}
+
+#formFile{
+    color: grey;
+    
+}
+
+/* #video-url{
+
+} */
+
+#url-button{
+    background-color: #9FC6D3;
+    color: black;
+    border-color: #897F9E;
+    
+    
+}
