@@ -61,7 +61,15 @@
                 <div class="mb-3">
                     <label for="formFile" class="form-label">chose audio file to <span
                             id="Summar-z3">summar'z3</span></label>
-                    <input class="form-control" type="file" id="formFile">
+                    <input class="form-control" type="file" id="formFile" name="upload_audio_file" method="post">
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary mb-3" id="audio-file-button"><span
+                            id="Summar-z3">summar-z3</span> upload</button>
                 </div>
             </div>
         </div>
@@ -75,11 +83,29 @@
             <div class="col-6">
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary mb-3" id="url-button"><span
-                            id="Summar-z3">summar-z3</span></button>
+                            id="Summar-z3">summar-z3</span> url</button>
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <div class="container text-justify">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                Na bootstrap jeszcze nie umiem więc zrobię tradycyjnie do prototypu
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div>
+                        <form method="post" enctype="multipart/form-data">
+                            <input type="file" name="file" id="audio-file-prototype">
+                            <input type="submit" name="submit" id="submit-button-audio-file-prototype" value="upload">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
