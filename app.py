@@ -18,6 +18,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 test_transcript = text_examples.qchnn_good + text_examples.qchnn_end + text_examples.qchnn_end
 
+# extract partitioned string list from transcript
 partitioned_prompt = partitioner.partition_text(test_transcript)
 
 # Routes methods
@@ -74,7 +75,7 @@ def new_index():
             print("file uploaded to uploads/audio.mp3")
             print("transcribe audio --------------------")
             payload={}
-            files = [('audio_file',('audio.mp3',open('uploads/audio.mp3','rb'),'audio/mpeg'))]
+            files = [('audio_file',('audio.mp3', open('uploads/213742069/audio.mp3', 'rb'), 'audio/mpeg'))]
             response = req.request("POST", URL, data=payload, files=files)
             # extract raw text from the response
             transcript = eval(response.text)['text']
