@@ -6,11 +6,10 @@ import text_examples
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
-partitioned_prompt = [text_examples.qchnn_good,
-                      text_examples.qchnn_bad, text_examples.qchnn_end]
+partitioned_prompt = [text_examples.qchnn_good, text_examples.qchnn_bad, text_examples.qchnn_end]
 
 
-@app.route("/", methods=("GET", "POST"))
+@app.route("/index_OLD", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
         # prompt = ex_prompt_1
@@ -46,13 +45,13 @@ def index():
 
     reformatted_result = response.choices[0].text
 
-    return render_template("index.html", result=result, formatted_result=reformatted_result)
+    return render_template("index_OLD.html", result=result, formatted_result=reformatted_result)
 
 
-@app.route("/new_index")
+@app.route("/")
 def new_index():
 
-    return render_template("new_index.html")
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
