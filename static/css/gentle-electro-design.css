@@ -2,11 +2,14 @@
 
 #headlinetext {
     font-family: 'VT323', monospace;
-    font-size: 210px;
+    /* font-size: 210px; */
+    font-size: 18vw;
     padding-left: 18px;
     text-align: justify;
     display: inline-block;
-
+    line-height: normal;
+    word-break: break-word;
+    margin-bottom: 1rem;
 }
 
 #navbarNav {
@@ -23,7 +26,7 @@ p {
 }
 
 .thebigtext {
-    font-size: 100px;
+    font-size: 8vh;
     font-family: 'VT323', monospace;
     padding-left: 18px;
 }
@@ -67,6 +70,9 @@ body {
 }
 
 #audio-file-button{
+    font-family: 'VT323', monospace;
+    font-size: larger;
+    margin-top: 4px;
     color: #030301;
     background-color: #9FC6D3;
     border-color: #6F1A07;

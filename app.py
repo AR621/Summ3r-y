@@ -2,26 +2,30 @@ import os
 
 import openai
 import requests as req
-from flask import Flask, redirect, render_template, request, url_for, flash
+from flask import Flask, redirect, render_template, request, url_for, flash, session
 from werkzeug.utils import secure_filename
 # internal imports
 import text_examples        # debugging transcript
 import partitioner          # for partitioning transcript into smaller subtexts
 
 UPLOAD_FOLDER = '/uploads'
-ALLOWED_EXTANSIONS = {'.mp3', '.flac'}
+ALLOWED_EXTANSIONS = {'.mp3'}
 URL = "https://whisper.lablab.ai/asr"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = "bajo_bango"
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-test_transcript = text_examples.qchnn_good + text_examples.qchnn_end + text_examples.qchnn_end
+test_transcript = text_examples.qchnn_good + \
+    text_examples.qchnn_end + text_examples.qchnn_end
 
 # extract partitioned string list from transcript
 partitioned_prompt = partitioner.partition_text(test_transcript)
 
 # Routes methods
+
+
 @app.route("/index_OLD", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
@@ -63,25 +67,47 @@ def index():
 
 @app.route("/", methods=["GET", "POST"])
 def new_index():
-    if request.method == 'POST':
-        if request.form["submit"] == "upload":
-            print("You clicked upload   ##########################")
-            if 'file' not in request.files:
-                print("no file part")
-                return redirect(request.url)
-            file = request.files['file']
-            print(file)
-            file.save("uploads/audio.mp3")
-            print("file uploaded to uploads/audio.mp3")
-            print("transcribe audio --------------------")
-            payload={}
-            files = [('audio_file',('audio.mp3', open('uploads/213742069/audio.mp3', 'rb'), 'audio/mpeg'))]
-            response = req.request("POST", URL, data=payload, files=files)
-            # extract raw text from the response
-            transcript = eval(response.text)['text']
-            print(transcript)
+    if request.method == "POST":
+        print("############     POST    ##############")
 
+        # upload file scenerio
+        if request.form["upload_button"] == "upload":
+            print("upload button clicked!")
+            if "file" not in request.files:
+                flash("no file to upload")
+                return redirect(request.url)
+            file = request.files["file"]
+            if file and allowed_file(file.filename):
+                print(file.filename)
+                file.save("uploads/audio.mp3")
+                print("file uploaded to uploads/audio.mp3")
+                print("transcribe audio --------------------")
+                payload = {}
+                files = [('audio_file', ('audio.mp3', open(
+                    'uploads/audio.mp3', 'rb'), 'audio/mpeg'))]
+                response = req.request("POST", URL, data=payload, files=files)
+                # extract raw text from the response
+                transcript = eval(response.text)['text']
+                # session is good for maximum 4000b so we will probable have to find another way
+                session['transcript'] = transcript
+
+                return redirect(url_for("summary"))
+
+        # if request.form["paste_url"] == "paste":
+
+        #     pass
     return render_template("index.html")
+
+
+@app.route("/summary")
+def summary():
+    if "transcript" in session:
+        transcript = session["transcript"]
+        partioned_transcript = partitioner.partition_text(transcript)
+        print(len(partioned_transcript))
+        return render_template("summary.html", text=transcript)
+    else:
+        return redirect("/")
 
 
 @app.route("/about")
@@ -109,5 +135,8 @@ def reformat_prompt(prompt):
 
 # upload file methods
 def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTANSIONS
+    index_of_dot = filename.find('.')
+    file_extansion = filename[index_of_dot:]
+    if file_extansion in ALLOWED_EXTANSIONS:
+        return True
+    return False

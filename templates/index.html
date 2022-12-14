@@ -40,7 +40,14 @@
             </div>
         </div>
     </nav>
-    <div class="container text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid text-center">
         <div id="headlinetext">
             Summar'z3 m3
         </div>
@@ -55,42 +62,35 @@
     </div>
 
     <!-- upload audio or url -->
-    <div class="container text-justify">
+    <div class="container text-justify">        
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">chose audio file to <span
-                            id="Summar-z3">summar'z3</span></label>
-                    <input class="form-control" type="file" id="formFile" name="upload_audio_file" method="post">
+                    <form method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" class="form-control" id="formFile">
+                        <input type="submit" class="btn btn-primary mb-3" id="audio-file-button" name="upload_button" value="upload"> 
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3" id="audio-file-button"><span
-                            id="Summar-z3">summar-z3</span> upload</button>
-                </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <label for="video-url" class="form-label">no audio? dont't worry we will convert video for you</label>
+            <input class="form-control" type="url" placeholder="video url" aria-label="video url" id="video-url">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary mb-3" id="url-button"><span id="Summar-z3">summar-z3</span>
+                    url</button>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <label for="video-url" class="form-label">no audio? dont't worry we will convert video for you</label>
-                <input class="form-control" type="url" placeholder="video url" aria-label="video url" id="video-url">
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3" id="url-button"><span
-                            id="Summar-z3">summar-z3</span> url</button>
-                </div>
-            </div>
-        </div>
+    </div>
 
     </div>
 
-    <div class="container text-justify">
+    <!-- <div class="container text-justify">
         <div class="row justify-content-center">
             <div class="col-6">
                 Na bootstrap jeszcze nie umiem więc zrobię tradycyjnie do prototypu
@@ -106,7 +106,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- adding bootstrap -->
