@@ -1,4 +1,4 @@
-/* https://coolors.co/f5f0e8-9fc6d3-897f9e-d2bec1-b8a5f2 */
+/* https://coolors.co/f5f0e8-9fc6d3-6f1a07-d2bec1-030301 */
 
 #headlinetext {
     font-family: 'VT323', monospace;
@@ -57,9 +57,19 @@ body {
 } */
 
 #url-button{
+    margin-top: 4px;
     background-color: #9FC6D3;
     color: black;
     border-color: #897F9E;
+    border-width: 2px;
     
     
+}
+
+#audio-file-button{
+    color: #030301;
+    background-color: #9FC6D3;
+    border-color: #6F1A07;
+    border-width: 2px;
+
 }
