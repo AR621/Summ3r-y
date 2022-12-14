@@ -4,7 +4,9 @@ import openai
 import requests as req
 from flask import Flask, redirect, render_template, request, url_for, flash
 from werkzeug.utils import secure_filename
-import text_examples
+# internal imports
+import text_examples        # debugging transcript
+import partitioner          # for partitioning transcript into smaller subtexts
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3', '.flac'}
@@ -13,9 +15,10 @@ URL = "https://whisper.lablab.ai/asr"
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 openai.api_key = os.getenv("OPENAI_API_KEY")
-partitioned_prompt = [text_examples.qchnn_good,
-                      text_examples.qchnn_bad, text_examples.qchnn_end]
 
+test_transcript = text_examples.qchnn_good + text_examples.qchnn_end + text_examples.qchnn_end
+
+partitioned_prompt = partitioner.partition_text(test_transcript)
 
 # Routes methods
 @app.route("/index_OLD", methods=("GET", "POST"))
@@ -39,7 +42,7 @@ def index():
             # summary = summary + '\n'
 
         print('RESULT:{}'.format(summary))
-        return redirect(url_for("index", result=summary))
+        return redirect(url_for("index_OLD", result=summary))
 
     result = request.args.get("result")
 
@@ -54,7 +57,7 @@ def index():
 
     reformatted_result = response.choices[0].text
 
-    return render_template("index_OLD.html", result=result, formatted_result=reformatted_result)
+    return render_template("index_OLD.html", result=result)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -73,7 +76,9 @@ def new_index():
             payload={}
             files = [('audio_file',('audio.mp3',open('uploads/audio.mp3','rb'),'audio/mpeg'))]
             response = req.request("POST", URL, data=payload, files=files)
-            print(response.text)
+            # extract raw text from the response
+            transcript = eval(response.text)['text']
+            print(transcript)
 
     return render_template("index.html")
 

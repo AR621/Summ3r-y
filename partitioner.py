@@ -1,29 +1,32 @@
+def partition_text(transcript, stop_word_num=180):
+  # divide the stranscript into words
+  words = transcript.split()
 
-
-import text_examples
-# Define the string
-my_string = text_examples.qchnn_good + text_examples.qchnn_end + text_examples.qchnn_end
-
-# Split the string into a list of words
-words = my_string.split()
-
-# Set the word number you want to stop at
-stop_word_num = 300
-
-# Create an empty string to store the words before the stop word
-before_stop_word = ""
-
-# Iterate over the words in the string
-for i, word in enumerate(words):
-  # Check if you've reached the word you want to stop at
-  if i == stop_word_num:
-    # Do something
-    print("Reached word number", stop_word_num)
-    break
+  # Create an empty list to store partitioned text, string to store the words before the stop word and a counter
+  partitioned_text = []
+  before_stop_word = ""
+  counter = 0
+  # Iterate over the words in the string
+  for word in words:
+    # Check if you've reached the word you want to stop at
+    if counter == stop_word_num:
+      if(word[-1] != '.'):
+        # After the values is reached append until you reach an end of sentence ('.')
+        before_stop_word += word + " "
+      else:
+        before_stop_word += word + " "
+        # and finally, add the whole sentence as an element of the partitioned text list
+        partitioned_text.append(before_stop_word)
+        # Reset before_stop_word to an empty string and counter set to 0
+        before_stop_word = ""
+        counter = 0
+    else:
+      # Append the current word to the new string
+      before_stop_word += word + " "
+      counter= counter + 1
   else:
-    # Append the current word to the new string
-    before_stop_word += word + " "
+    # catch the last reamining part of text into another element of the list
+    partitioned_text.append(before_stop_word)
 
-# Print the new string
-print(before_stop_word)
-
+  # Print the new string
+  return partitioned_text
