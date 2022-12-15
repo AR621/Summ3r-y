@@ -2,7 +2,9 @@ from requests import request
 from pytube import YouTube
 import os
 from moviepy.editor import AudioFileClip
+import re
 
+#Absolute to /resources
 ABS = os.path.abspath('resources')
 
 def video_download(link, key):
@@ -22,11 +24,15 @@ def divide_into_parts(key):
     os.remove(f'{ABS}/{key}/audio.mp3')
 
 def transcribe_all(key):
+    #creating expresion for better speed
+    p = re.compile(r'\d+')
     whole_transcript = []
     parts = os.listdir(f'{ABS}/{key}/')
+    #sorting parts list
+    parts = sorted(parts, key=lambda s: int(p.search(s).group()))
     for file in parts:
-        txt = transcribe(file, key)
-        whole_transcript.append(txt)
+        text = transcribe(file, key)
+        whole_transcript.append(text)
         os.remove(f'{ABS}/{key}/{file}')
     os.rmdir(f'{ABS}/{key}')
     return whole_transcript
@@ -40,11 +46,10 @@ def transcribe(file, key):
     ]
     response = request("POST", url, data=payload, files=files)
     transcript = eval(response.text)['text']
-    print(transcript)
     return transcript
 
 if __name__ == '__main__':
-    file = video_download('https://www.youtube.com/watch?v=n3b9QKo_VpM&ab_channel=HubermanLabClips', 'key')
+    file = video_download('https://www.youtube.com/watch?v=5Dq1oQkwhUw', 'key')
     divide_into_parts('key')
     all = transcribe_all('key')
     print(all)
