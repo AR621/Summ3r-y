@@ -1,6 +1,5 @@
 
 .idea/*
 __pycache__
-uploads/*
-*.mp3
+uploads/*.mp3
 /text/*.txt
