@@ -56,37 +56,46 @@
     <div class="container text-justify">
         <div class="row justify-content-center">
             <div class="col-6">
-                <p>some blind text</p>
+                <div class="typewriter">
+                    <p id="audio-label-text">chose and audio file and get, a transcript of it. just make sure it is an mp3 file</p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- upload audio or url -->
-    <div class="container text-justify">        
+    <div class="container text-justify">
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="mb-3">
                     <form method="post" enctype="multipart/form-data">
                         <input type="file" name="file" class="form-control" id="formFile">
-                        <input type="submit" class="btn btn-primary mb-3" id="audio-file-button" name="upload_button" value="upload"> 
+                        <input type="submit" class="btn btn-primary mb-3" id="audio-file-button" name="upload_button"
+                            value="upload" onclick="uploadButton()">
                     </form>
                 </div>
             </div>
         </div>
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <label for="video-url" class="form-label">no audio? dont't worry we will convert video for you</label>
-            <input class="form-control" type="url" placeholder="video url" aria-label="video url" id="video-url">
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary mb-3" id="url-button"><span id="Summar-z3">summar-z3</span>
-                    url</button>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <label for="video-url" class="form-label">
+                    <div class="typewriter">
+                        <p id="url-label">
+                            no audio file? just paste the url and we will do the work
+                        </p>
+                    </div>
+                </label>
+                <input class="form-control" type="url" placeholder="video url" aria-label="video url" id="video-url">
             </div>
         </div>
-    </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary mb-3" id="url-button"><span
+                            id="Summar-z3-button" onclick="summarizeButton()">summar-z3</span></button>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -115,7 +124,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
-
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 
 </html>
