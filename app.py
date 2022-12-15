@@ -10,6 +10,7 @@ import secrets
 import text_examples        # debugging transcript
 import partitioner          # for partitioning transcript into smaller subtexts
 import summarizer           # for summary requests
+import downloader           # for video file handling
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3'}
@@ -43,6 +44,7 @@ def new_index():
 
                 # save the name as a cookie for individual client
                 session['file_name'] = new_filename
+                session['scenerio'] = "file"
 
                 # transcribe audio
                 filename = session["file_name"]
@@ -60,6 +62,21 @@ def new_index():
             if request.form.get("video_url", "") != "":
                 url = request.form.get("video_url", "")
                 print(url)
+
+                # download a video and split it
+                new_dir = generate_unique_filename("video")
+                downloader.video_download(url, new_dir)
+                downloader.divide_into_parts(new_dir)
+
+                # generate a transcript file
+                transcripts_videos = downloader.transcribe_all(new_dir)
+                transcript_video = " ".join(transcripts_videos)
+                save_to_file(transcript_video, "text/" + new_dir + ".txt")
+                # print("text/" + new_dir + ".txt")
+                session['file_name'] = new_dir
+                session['scenerio'] = 'url'
+                return redirect(url_for("summary"))
+
             else:
                 print("an empty string")
             pass
@@ -72,20 +89,38 @@ def new_index():
 # the right one
 def summary():
     if "file_name" in session:
-        # read text from unique text file
-        path_to_txt_file = "text/" + session["file_name"][:-4] + ".txt"
-        transcript = read_from_file(path_to_txt_file)
+        if session['scenerio'] == 'file':
+            # read text from unique text file
+            path_to_txt_file = "text/" + session["file_name"][:-4] + ".txt"
+            transcript = read_from_file(path_to_txt_file)
 
-        # partition transcript for summary needs
-        partitioned_transcript = partitioner.partition_text(transcript)
-        summary = summarizer.request_summary(partitioned_transcript)
-        filename = session["file_name"]
-        save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
-        path_to_summary = "text/" + \
-            'summary_' + filename[:-4] + ".txt"
-
-        return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
+            # partition transcript for summary needs
+            partitioned_transcript = partitioner.partition_text(transcript)
+            summary = summarizer.request_summary(partitioned_transcript)
+            filename = session["file_name"]
+            save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
+            path_to_summary = "text/" + \
+                'summary_' + filename[:-4] + ".txt"
+            return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
                                path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+        
+        elif session['scenerio'] == 'url':
+            # read text from unique text file
+            path_to_txt_file = "text/" + session["file_name"] + ".txt"
+            transcript = read_from_file(path_to_txt_file)
+
+            # partition transcript for summary needs
+            partitioned_transcript = partitioner.partition_text(transcript)
+            summary = summarizer.request_summary(partitioned_transcript)
+            filename = session["file_name"]
+            save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
+            path_to_summary = "text/" + \
+                'summary_' + filename[:-4] + ".txt"
+
+            return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
+                                path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+        else:
+            return redirect('/')
     else:
         return redirect("/")
 # for debuging purposes
