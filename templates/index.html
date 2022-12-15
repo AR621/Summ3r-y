@@ -57,7 +57,8 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="typewriter">
-                    <p id="audio-label-text">chose and audio file and get, a transcript of it. just make sure it is an mp3 file</p>
+                    <p id="audio-label-text">chose and audio file and get, a transcript of it. just make sure it is
+                        mp3 file</p>
                 </div>
             </div>
         </div>
@@ -78,25 +79,21 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-6">
-                <label for="video-url" class="form-label">
-                    <div class="typewriter">
-                        <p id="url-label">
-                            no audio file? just paste the url and we will do the work
-                        </p>
-                    </div>
-                </label>
-                <input class="form-control" type="url" placeholder="video url" aria-label="video url" id="video-url">
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-6">
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary mb-3" id="url-button"><span
-                            id="Summar-z3-button" onclick="summarizeButton()">summar-z3</span></button>
+                    <label for="video-url" class="form-label">
+                        <div class="typewriter">
+                            <p id="url-label">
+                                no audio file? just paste the url and we will do the work
+                            </p>
+                        </div>
+                        <form method="post" enctype="multipart/form-data">
+                            <input type="url" placeholder="video url" name="video_url" id="url" class="form-control">
+                            <input type="submit" id="url-button" name="url_button" value="paste"
+                                onclick="summarizeButton()" class="btn btn-primary mb-3">
+                        </form>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- <div class="container text-justify">

@@ -73,7 +73,7 @@ def new_index():
         print("############     POST    ##############")
 
         # upload file scenerio
-        if request.form["upload_button"] == "upload":
+        if request.form.get("upload_button", "") == "upload":
             print("upload button clicked!")
             if "file" not in request.files:
                 flash("no file to upload")
@@ -102,9 +102,16 @@ def new_index():
                 return redirect(url_for("summary"))
 
         # paste url scenerio
-        # if request.form["paste_url"] == "paste":
-
-        #     pass
+        elif request.form.get("url_button", "") == "paste":
+            print("paste button clicked")
+            if request.form.get("video_url", "") != "":
+                url = request.form.get("video_url", "")
+                print(url)
+            else:
+                print("an empty string")
+            pass
+        else:
+            pass
     return render_template("index.html")
 
 

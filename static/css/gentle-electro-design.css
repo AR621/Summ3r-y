@@ -65,10 +65,12 @@ body {
 }
 
 #url-button {
+    font-family: 'VT323', monospace;
+    font-size: larger;
     margin-top: 4px;
     background-color: #9FC6D3;
     color: black;
-    border-color: #897F9E;
+    border-color: #6F1A07;
     border-width: 2px;
 
 
