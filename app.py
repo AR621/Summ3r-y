@@ -7,7 +7,6 @@ from werkzeug.utils import secure_filename
 import secrets
 
 # internal imports
-import text_examples        # debugging transcript
 import partitioner          # for partitioning transcript into smaller subtexts
 import summarizer           # for summary requests
 import downloader           # for video file handling
@@ -19,11 +18,6 @@ URL = "https://whisper.lablab.ai/asr"
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "bajo_bango"
-
-test_transcript = text_examples.qchnn_good + \
-text_examples.qchnn_end + text_examples.qchnn_end
-
-
 
 @app.route("/", methods=["GET", "POST"])
 def new_index():
