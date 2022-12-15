@@ -2,7 +2,6 @@
 .idea/*
 __pycache__
 uploads/*.mp3
-#*.mp3
 /text/*.txt
 /.env
 

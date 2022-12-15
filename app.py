@@ -2,7 +2,7 @@ import os
 
 import openai
 import requests as req
-from flask import Flask, redirect, render_template, request, url_for, flash, session
+from flask import escape, Flask, redirect, render_template, request, url_for, flash, session, send_file
 from werkzeug.utils import secure_filename
 import secrets
 
@@ -21,6 +21,7 @@ app.secret_key = "bajo_bango"
 
 test_transcript = text_examples.qchnn_good + \
 text_examples.qchnn_end + text_examples.qchnn_end
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -68,6 +69,7 @@ def new_index():
 
 
 @app.route("/summary")
+# the right one
 def summary():
     if "file_name" in session:
         # read text from unique text file
@@ -79,12 +81,39 @@ def summary():
         summary = summarizer.request_summary(partioned_transcript)
         filename = session["file_name"]
         save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
-        path_to_summary = summary, "text/" + 'summary_' + filename[:-4] + ".txt"
+        path_to_summary = "text/" + \
+            'summary_' + filename[:-4] + ".txt"
 
-        return render_template("summary.html", audio_transcript=transcript, summary_text=summary, path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+        return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
+                               path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
     else:
         return redirect("/")
+# for debuging purposes
+# def summary():
+#     if "file_name" in session:
+#         # read text from unique text file
+#         path_to_txt_file = "text/" + session["file_name"][:-4] + ".txt"
+#         transcript = read_from_file(path_to_txt_file)
 
+#         # partition transcript for summary needs
+#         # partioned_transcript = partitioner.partition_text(transcript)
+#         # summary = summarizer.request_summary(partioned_transcript)
+#         filename = session["file_name"]
+#         # save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
+#         path_to_summary = "text/" + \
+#             'summary_' + filename[:-4] + ".txt"
+#         summary = read_from_file(path_to_summary)
+#         print(path_to_txt_file)
+#         return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
+#                                path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+#     else:
+#         return redirect("/")
+
+
+# let the user download his individual files with summary or transcript
+@app.route("/<path:directory>")
+def downlaod_file(directory):
+    return send_file(directory, as_attachment=True, attachment_filename=directory)
 
 @app.route("/about")
 def about():
@@ -96,6 +125,8 @@ def example():
     return render_template("example.html")
 
 # upload file methods
+
+
 def allowed_file(filename):
     index_of_dot = filename.find('.')
     file_extansion = filename[index_of_dot:]
@@ -124,7 +155,7 @@ def transcribe_external(filename):
     path = "uploads/" + filename
     payload = {}
     files = [('audio_file', (filename, open(
-    path, 'rb'), 'audio/mpeg'))]
+        path, 'rb'), 'audio/mpeg'))]
     return req.request("POST", URL, data=payload, files=files)
 
 
