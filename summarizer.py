@@ -1,10 +1,13 @@
 import openai
-
+import os
 # API_KEY = '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'
 # openai.api_key = API_KEY
 
+
 def request_summary(input_text, temperature=0.1, max_tokens=768):
+    openai.api_key = os.getenv("OPENAI_API_KEY")
     summary = ""
+    print(input_text)
     for text_partition in input_text:
         response = openai.Completion.create(
             max_tokens=max_tokens,
@@ -25,7 +28,7 @@ def reformat_prompt(prompt):
     return """Could you reformat this text? 
     \"{}\"""".format(prompt)
 
-#   DEBUG
+#
 # import text_examples
 # import partitioner
 #

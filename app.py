@@ -18,10 +18,10 @@ URL = "https://whisper.lablab.ai/asr"
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "bajo_bango"
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 test_transcript = text_examples.qchnn_good + \
-    text_examples.qchnn_end + text_examples.qchnn_end
+text_examples.qchnn_end + text_examples.qchnn_end
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -157,3 +157,6 @@ def transcribe_external(filename):
     files = [('audio_file', (filename, open(
         path, 'rb'), 'audio/mpeg'))]
     return req.request("POST", URL, data=payload, files=files)
+
+
+app.run(debug=False, host='0.0.0.0', port=2137)

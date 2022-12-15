@@ -3,3 +3,5 @@
 __pycache__
 uploads/*.mp3
 /text/*.txt
+/.env
+
