@@ -3,9 +3,11 @@ from pytube import YouTube
 import os
 from moviepy.editor import AudioFileClip
 import re
+import whisper
 
 #Absolute to /resources
 ABS = os.path.abspath('resources')
+model = whisper.load_model('medium.en')
 
 def video_download(link, key):
     os.mkdir(f'{ABS}/{key}')
@@ -39,17 +41,20 @@ def transcribe_all(key):
     
 
 def transcribe(file, key):
-    url = "https://whisper.lablab.ai/asr"
-    payload={}
-    files=[
-    ('audio_file',(file ,open(f'{ABS}/{key}/{file}','rb'),'audio/mpeg'))
-    ]
-    response = request("POST", url, data=payload, files=files)
-    transcript = eval(response.text)['text']
-    return transcript
+    transcript = model.transcribe(f'{ABS}/{key}/{file}')
+    return transcript['text']
+
+    # url = "https://whisper.lablab.ai/asr"
+    # payload={}
+    # files=[
+    # ('audio_file',(file ,open(f'{ABS}/{key}/{file}','rb'),'audio/mpeg'))
+    # ]
+    # response = request("POST", url, data=payload, files=files)
+    # transcript = eval(response.text)['text']
+    # return transcript
 
 if __name__ == '__main__':
-    file = video_download('https://www.youtube.com/watch?v=5Dq1oQkwhUw', 'key')
+    file = video_download('https://www.youtube.com/watch?v=n3b9QKo_VpM', 'key')
     divide_into_parts('key')
     all = transcribe_all('key')
     print(all)
