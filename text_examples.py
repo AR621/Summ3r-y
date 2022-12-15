@@ -75,3 +75,4 @@ of numbers [42]. The thing that remains sure however is that for now it is activ
 researched and if not bringing advantages by itself, it can bring us insights about quantum
 world around us and the classical algorithms that we try to implement into quantum world,
 which might bring improvements to them as well."""
+qchnn_whole = qchnn_good + qchnn_end + qchnn_end
