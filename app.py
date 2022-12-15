@@ -117,27 +117,6 @@ def summary():
             return redirect('/')
     else:
         return redirect("/")
-# for debuging purposes
-# def summary():
-#     if "file_name" in session:
-#         # read text from unique text file
-#         path_to_txt_file = "text/" + session["file_name"][:-4] + ".txt"
-#         transcript = read_from_file(path_to_txt_file)
-
-#         # partition transcript for summary needs
-#         # partioned_transcript = partitioner.partition_text(transcript)
-#         # summary = summarizer.request_summary(partioned_transcript)
-#         filename = session["file_name"]
-#         # save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
-#         path_to_summary = "text/" + \
-#             'summary_' + filename[:-4] + ".txt"
-#         summary = read_from_file(path_to_summary)
-#         print(path_to_txt_file)
-#         return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-#                                path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
-#     else:
-#         return redirect("/")
-
 
 # let the user download his individual files with summary or transcript
 @app.route("/<path:directory>")
@@ -188,4 +167,4 @@ def transcribe_external(filename):
     return req.request("POST", URL, data=payload, files=files)
 
 
-app.run(debug=False, host='0.0.0.0', port=2137)
+app.run(debug=False)
