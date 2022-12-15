@@ -1,7 +1,7 @@
 # Summ3r-y
 
 This is a small webservice project that allows you to upload an mp3 audio while that then gets transcribed and summarized by openAi models
-The project was realized  as part of openAi hackathon together with colonelWalterKurtz and PioSikorski
+The project was realized  as part of OpenAI Whisper, GPT3, Codex & DALL-E 2 Hackathon together with colonelWalterKurtz and PioSikorski.
 
 ## Stack
 
