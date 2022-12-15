@@ -14,51 +14,50 @@ URL = "https://whisper.lablab.ai/asr"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
-test_transcript = text_examples.qchnn_good + text_examples.qchnn_end + text_examples.qchnn_end
+# test_transcript = text_examples.qchnn_good + text_examples.qchnn_end + text_examples.qchnn_end
 
 # extract partitioned string list from transcript
-partitioned_prompt = partitioner.partition_text(test_transcript)
+# partitioned_prompt = partitioner.partition_text(test_transcript)
 
 # Routes methods
-@app.route("/index_OLD", methods=("GET", "POST"))
-def index():
-    if request.method == "POST":
-        # prompt = ex_prompt_1
-        # prompt = text_examples.qchnn_bad
-        # prompt = text_examples.qchnn_good + text_examples.qchnn_bad + text_examples.qchnn_end
-        # print('PROMPT:\n{}'.format(prompt))
-        summary = ""
-        for prompt in partitioned_prompt:
-            response = openai.Completion.create(
-                # model="text-davinci-003",
-                max_tokens=768,
-                model="text-curie-001",
-                prompt=summarize_prompt(prompt),
-                temperature=0.1,
-                # top_p=0.15
-            )
-            summary = summary + str(response.choices[0].text)
-            # summary = summary + '\n'
-
-        print('RESULT:{}'.format(summary))
-        return redirect(url_for("index_OLD", result=summary))
-
-    result = request.args.get("result")
-
-    response = openai.Completion.create(
-        # model="text-davinci-003",
-        max_tokens=768,
-        model="text-curie-001",
-        prompt=reformat_prompt(result),
-        temperature=0.1,
-        # top_p=0.15
-    )
-
-    reformatted_result = response.choices[0].text
-
-    return render_template("index_OLD.html", result=result)
+# @app.route("/index_OLD", methods=("GET", "POST"))
+# def index():
+#     if request.method == "POST":
+#         # prompt = ex_prompt_1
+#         # prompt = text_examples.qchnn_bad
+#         # prompt = text_examples.qchnn_good + text_examples.qchnn_bad + text_examples.qchnn_end
+#         # print('PROMPT:\n{}'.format(prompt))
+#         summary = ""
+#         for prompt in partitioned_prompt:
+#             response = openai.Completion.create(
+#                 # model="text-davinci-003",
+#                 max_tokens=768,
+#                 model="text-curie-001",
+#                 prompt=summarize_prompt(prompt),
+#                 temperature=0.1,
+#                 # top_p=0.15
+#             )
+#             summary = summary + str(response.choices[0].text)
+#             # summary = summary + '\n'
+#
+#         print('RESULT:{}'.format(summary))
+#         return redirect(url_for("index_OLD", result=summary))
+#
+#     result = request.args.get("result")
+#
+#     response = openai.Completion.create(
+#         # model="text-davinci-003",
+#         max_tokens=768,
+#         model="text-curie-001",
+#         prompt=reformat_prompt(result),
+#         temperature=0.1,
+#         # top_p=0.15
+#     )
+#
+#     reformatted_result = response.choices[0].text
+#
+#     return render_template("index_OLD.html", result=result)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -92,20 +91,6 @@ def about():
 @app.route("/example")
 def example():
     return render_template("example.html")
-
-
-# GPT3 methods
-def summarize_prompt(prompt):
-    # return """Suggest three names for a prompt that is a superhero.
-    return """Could you precisely summarize this video? 
-    \"{}\"""".format(prompt)
-
-
-def reformat_prompt(prompt):
-    # return """Suggest three names for a prompt that is a superhero.
-    return """Could you reformat this text? 
-    \"{}\"""".format(prompt)
-
 
 # upload file methods
 def allowed_file(filename):
