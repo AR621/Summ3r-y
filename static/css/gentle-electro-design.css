@@ -23,6 +23,7 @@ p {
     font-family: 'Arvo', serif;
     /* padding-left: 18px; */
     text-align: justify;
+    word-break: keep-all;
 }
 
 h2 {

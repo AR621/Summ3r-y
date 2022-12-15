@@ -77,8 +77,8 @@ def summary():
         transcript = read_from_file(path_to_txt_file)
 
         # partition transcript for summary needs
-        partioned_transcript = partitioner.partition_text(transcript)
-        summary = summarizer.request_summary(partioned_transcript)
+        partitioned_transcript = partitioner.partition_text(transcript)
+        summary = summarizer.request_summary(partitioned_transcript)
         filename = session["file_name"]
         save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
         path_to_summary = "text/" + \
@@ -112,7 +112,7 @@ def summary():
 
 # let the user download his individual files with summary or transcript
 @app.route("/<path:directory>")
-def downlaod_file(directory):
+def download_file(directory):
     return send_file(directory, as_attachment=True, attachment_filename=directory)
 
 @app.route("/about")
