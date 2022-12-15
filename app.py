@@ -77,9 +77,11 @@ def summary():
         # partition transcript for summary needs
         partioned_transcript = partitioner.partition_text(transcript)
         summary = summarizer.request_summary(partioned_transcript)
-        print(len(summary))
+        filename = session["file_name"]
+        save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
+        path_to_summary = summary, "text/" + 'summary_' + filename[:-4] + ".txt"
 
-        return render_template("summary.html", audio_transcript=transcript, summary_text=summary)
+        return render_template("summary.html", audio_transcript=transcript, summary_text=summary, path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
     else:
         return redirect("/")
 
