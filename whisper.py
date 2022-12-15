@@ -1,36 +1,50 @@
 from requests import request
 from pytube import YouTube
-from pydub import AudioSegment
 import os
+from moviepy.editor import AudioFileClip
 
-def download(link):
+ABS = os.path.abspath('resources')
+
+def video_download(link, key):
+    os.mkdir(f'{ABS}/{key}')
     yt = YouTube(link)
     video = yt.streams.filter(only_audio=True).first()
-    out_file = video.download(output_path='./resources')
-    base, ext = os.path.splitext(out_file)
-    new_file = 'test' + '.mp3'
-    os.rename(out_file, new_file)
-    return new_file
+    out_file = video.download(output_path=f'{ABS}/{key}', filename='audio.mp3')
 
-def cuttin():
-    audio = AudioSegment.from_mp3('test.mp3')
-    parts = [audio[i:i+30 * 1000] for i in range(0, len(audio), 30*1000)]
-    print(parts)
-    for i, part in enumerate(parts):
-        part.export(f'part_{i}.mp3', format='mp3')
-        
-def transcribe(file):
+def divide_into_parts(key):
+    try:
+        audio = AudioFileClip(f'{ABS}/{key}/audio.mp3')
+        parts = [audio.subclip(i, i+30) for i in range(0, int(audio.duration), 30)]
+        for i, fragment in enumerate(parts):
+            fragment.write_audiofile(f'{ABS}/{key}/part_{i}.mp3')
+    except:
+        pass
+    os.remove(f'{ABS}/{key}/audio.mp3')
+
+def transcribe_all(key):
+    whole_transcript = []
+    parts = os.listdir(f'{ABS}/{key}/')
+    for file in parts:
+        txt = transcribe(file, key)
+        whole_transcript.append(txt)
+        os.remove(f'{ABS}/{key}/{file}')
+    os.rmdir(f'{ABS}/{key}')
+    return whole_transcript
+    
+
+def transcribe(file, key):
     url = "https://whisper.lablab.ai/asr"
     payload={}
     files=[
-    ('audio_file',('test.m4a', open(f'{file}','rb'),'audio/mpeg'))
+    ('audio_file',(file ,open(f'{ABS}/{key}/{file}','rb'),'audio/mpeg'))
     ]
     response = request("POST", url, data=payload, files=files)
-    return response
+    transcript = eval(response.text)['text']
+    print(transcript)
+    return transcript
 
 if __name__ == '__main__':
-    # file = download('https://www.youtube.com/watch?v=FCP_KbpA3jI')
-    cuttin()
-    # res = transcribe('test.m4a')
-    # print(res.text)
-    # print(res.text[0]['text'])
+    file = video_download('https://www.youtube.com/watch?v=n3b9QKo_VpM&ab_channel=HubermanLabClips', 'key')
+    divide_into_parts('key')
+    all = transcribe_all('key')
+    print(all)
