@@ -9,6 +9,7 @@ import secrets
 # internal imports
 import text_examples        # debugging transcript
 import partitioner          # for partitioning transcript into smaller subtexts
+import summarizer           # for summary requests
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3'}
@@ -21,49 +22,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 test_transcript = text_examples.qchnn_good + \
     text_examples.qchnn_end + text_examples.qchnn_end
-
-# extract partitioned string list from transcript
-# partitioned_prompt = partitioner.partition_text(test_transcript)
-
-# Routes methods
-# @app.route("/index_OLD", methods=("GET", "POST"))
-# def index():
-#     if request.method == "POST":
-#         # prompt = ex_prompt_1
-#         # prompt = text_examples.qchnn_bad
-#         # prompt = text_examples.qchnn_good + text_examples.qchnn_bad + text_examples.qchnn_end
-#         # print('PROMPT:\n{}'.format(prompt))
-#         summary = ""
-#         for prompt in partitioned_prompt:
-#             response = openai.Completion.create(
-#                 # model="text-davinci-003",
-#                 max_tokens=768,
-#                 model="text-curie-001",
-#                 prompt=summarize_prompt(prompt),
-#                 temperature=0.1,
-#                 # top_p=0.15
-#             )
-#             summary = summary + str(response.choices[0].text)
-#             # summary = summary + '\n'
-#
-#         print('RESULT:{}'.format(summary))
-#         return redirect(url_for("index_OLD", result=summary))
-#
-#     result = request.args.get("result")
-#
-#     response = openai.Completion.create(
-#         # model="text-davinci-003",
-#         max_tokens=768,
-#         model="text-curie-001",
-#         prompt=reformat_prompt(result),
-#         temperature=0.1,
-#         # top_p=0.15
-#     )
-#
-#     reformatted_result = response.choices[0].text
-#
-#     return render_template("index_OLD.html", result=result)
-
 
 @app.route("/", methods=["GET", "POST"])
 def new_index():
@@ -87,14 +45,10 @@ def new_index():
 
                 # transcribe audio
                 filename = session["file_name"]
-                path = "uploads/" + filename
-                payload = {}
-                files = [('audio_file', (filename, open(
-                    path, 'rb'), 'audio/mpeg'))]
-                response = req.request("POST", URL, data=payload, files=files)
-
+                response = transcribe_external(filename)
                 # extract raw text from the response and save it to txt file in text directory
                 transcript = eval(response.text)['text']
+                # save_to_file(transcript, "text/"+filename[:-4]+".txt")
                 save_to_file(transcript, "text/"+filename[:-4]+".txt")
 
                 return redirect(url_for("summary"))
@@ -122,9 +76,10 @@ def summary():
 
         # partition transcript for summary needs
         partioned_transcript = partitioner.partition_text(transcript)
-        print(len(partioned_transcript))
+        summary = summarizer.request_summary(partioned_transcript)
+        print(len(summary))
 
-        return render_template("summary.html", audio_transcript=transcript, summary_text=partioned_transcript)
+        return render_template("summary.html", audio_transcript=transcript, summary_text=summary)
     else:
         return redirect("/")
 
@@ -161,3 +116,11 @@ def save_to_file(text, filename):
 def read_from_file(filename):
     with open(filename, 'r') as file:
         return file.read()
+
+
+def transcribe_external(filename):
+    path = "uploads/" + filename
+    payload = {}
+    files = [('audio_file', (filename, open(
+    path, 'rb'), 'audio/mpeg'))]
+    return req.request("POST", URL, data=payload, files=files)

@@ -1,6 +1,6 @@
 import openai
 
-API_KEY = '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'
+API_KEY = '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'
 openai.api_key = API_KEY
 
 def request_summary(input_text, temperature=0.1, max_tokens=768):
@@ -26,9 +26,9 @@ def reformat_prompt(prompt):
     return """Could you reformat this text? 
     \"{}\"""".format(prompt)
 
-
-import text_examples
-import partitioner
-
-sum = request_summary(partitioner.partition_text(text_examples.qchnn_whole))
-print(sum)
+#
+# import text_examples
+# import partitioner
+#
+# sum = request_summary(partitioner.partition_text(text_examples.qchnn_whole))
+# print(sum)
