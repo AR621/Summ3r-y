@@ -3,7 +3,7 @@
 #headlinetext {
     font-family: 'VT323', monospace;
     /* font-size: 210px; */
-    font-size: 18vw;
+    font-size: 15vw;
     padding-left: 18px;
     text-align: justify;
     display: inline-block;
@@ -25,8 +25,13 @@ p {
     text-align: justify;
 }
 
+h2{
+    font-family: 'VT323', monospace;
+    text-align: center;
+}
+
 .thebigtext {
-    font-size: 8vh;
+    font-size: 12vh;
     font-family: 'VT323', monospace;
     padding-left: 18px;
 }

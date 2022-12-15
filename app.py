@@ -4,6 +4,8 @@ import openai
 import requests as req
 from flask import Flask, redirect, render_template, request, url_for, flash, session
 from werkzeug.utils import secure_filename
+import secrets
+
 # internal imports
 import text_examples        # debugging transcript
 import partitioner          # for partitioning transcript into smaller subtexts
@@ -78,21 +80,28 @@ def new_index():
                 return redirect(request.url)
             file = request.files["file"]
             if file and allowed_file(file.filename):
-                print(file.filename)
-                file.save("uploads/audio.mp3")
-                print("file uploaded to uploads/audio.mp3")
-                print("transcribe audio --------------------")
+                # save file to uploads directory and generate an unique name for it
+                new_filename = generate_unique_filename(file.filename)
+                file.save("uploads/"+new_filename)
+
+                # save the name as a cookie for individual client
+                session['file_name'] = new_filename
+
+                # transcribe audio
+                filename = session["file_name"]
+                path = "uploads/" + filename
                 payload = {}
-                files = [('audio_file', ('audio.mp3', open(
-                    'uploads/audio.mp3', 'rb'), 'audio/mpeg'))]
+                files = [('audio_file', (filename, open(
+                    path, 'rb'), 'audio/mpeg'))]
                 response = req.request("POST", URL, data=payload, files=files)
-                # extract raw text from the response
+
+                # extract raw text from the response and save it to txt file in text directory
                 transcript = eval(response.text)['text']
-                # session is good for maximum 4000b so we will probable have to find another way
-                session['transcript'] = transcript
+                save_to_file(transcript, "text/"+filename[:-4]+".txt")
 
                 return redirect(url_for("summary"))
 
+        # paste url scenerio
         # if request.form["paste_url"] == "paste":
 
         #     pass
@@ -101,11 +110,16 @@ def new_index():
 
 @app.route("/summary")
 def summary():
-    if "transcript" in session:
-        transcript = session["transcript"]
+    if "file_name" in session:
+        # read text from unique text file
+        path_to_txt_file = "text/" + session["file_name"][:-4] + ".txt"
+        transcript = read_from_file(path_to_txt_file)
+
+        # partition transcript for summary needs
         partioned_transcript = partitioner.partition_text(transcript)
         print(len(partioned_transcript))
-        return render_template("summary.html", text=transcript)
+
+        return render_template("summary.html", audio_transcript=transcript, summary_text=partioned_transcript)
     else:
         return redirect("/")
 
@@ -140,3 +154,19 @@ def allowed_file(filename):
     if file_extansion in ALLOWED_EXTANSIONS:
         return True
     return False
+
+
+# string file operations
+def generate_unique_filename(filename):
+    random_string = secrets.token_hex(16)
+    return f'{random_string}_{filename}'
+
+
+def save_to_file(text, filename):
+    with open(filename, 'w') as file:
+        file.write(text)
+
+
+def read_from_file(filename):
+    with open(filename, 'r') as file:
+        return file.read()
