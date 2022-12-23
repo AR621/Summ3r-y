@@ -167,4 +167,4 @@ def transcribe_external(filename):
     return req.request("POST", URL, data=payload, files=files)
 
 
-app.run(debug=False)
+app.run(debug=True)

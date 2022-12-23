@@ -60,28 +60,31 @@
     <!-- the transcript and summary divs -->
     <div class="container text-justify"></div>
     <div class="row justify-content-center">
-        <div class="col-5">
-            <h2>
-                <a href="{{ path_to_transcript }}">
-                    Transcript
-                </a>
-            </h2>
-            <hr>
-        </div>
-        <div class="col-5">
-            <h2>
-                <a href="{{ path_to_summary }}">
-                    Summary
-                </a>
-            </h2>
-            <hr>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-5">
+        <div class="col-md-5 col-sm-10">
+            <div class="row justify-content-center">
+                <h2>
+                    <a href="{{ path_to_transcript }}">
+                        Transcript
+                    </a>
+                </h2>
+                <hr>
+            </div>
+            <div class="row justify-content-center">
                 <p>{{audio_transcript}}</p>
             </div>
-            <div class="col-5">
-                <p>{{summary_text}}</p>
+        </div>
+        <div class="col-md-5 col-sm-10">
+            <div class="row justify-content-center">
+                <h2>
+                    <a href="{{ path_to_summary }}">
+                        Summary
+                    </a>
+                </h2>
+                <hr>
+            </div>
+            <div class="row justify-content-center">
+                    <p>{{summary_text}}</p>
+                </div>
             </div>
         </div>
     </div>

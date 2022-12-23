@@ -32,9 +32,9 @@ h2 {
 }
 
 .thebigtext {
-    font-size: 12vh;
+    font-size: 10vmax;
     font-family: 'VT323', monospace;
-    padding-left: 18px;
+    /* padding-left: 18px; */
 }
 
 body {
@@ -65,6 +65,11 @@ body {
     margin-bottom: 0;
 }
 
+
+#url{
+    min-width: 33dvw;
+}
+
 #url-button {
     font-family: 'VT323', monospace;
     font-size: larger;
@@ -76,6 +81,7 @@ body {
 
 
 }
+
 
 #audio-file-button {
     font-family: 'VT323', monospace;
@@ -94,10 +100,7 @@ body {
 
 /* animation typing zone */
 .typewriter p{
-    max-width: min-content;
-    width: min-content;
-    box-sizing: border-box;
-    height: min-content;
+    word-wrap: break-word;
     overflow: hidden;
     /* Ensures the content is not revealed until the animation */
     border-right: 0.5em solid #6F1A07;
