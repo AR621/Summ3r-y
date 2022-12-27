@@ -19,10 +19,6 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "bajo_bango"
 
-@app.route("/test")
-def test():
-    return render_template("base.html")
-
 @app.route("/", methods=["GET", "POST"])
 def new_index():
     if request.method == "POST":
