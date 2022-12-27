@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <!-- using our own css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gentle-electro-design.css') }}" />
+    <!-- adding some fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arvo&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arvo&family=VT323&display=swap');
+    </style>
+</head>
+
+<body style="background-color: #F5F0E8">
+    <nav class="navbar navbar-expand-md">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">home</a>
+                    </li>
+                    <!--                    <li class="nav-item">-->
+                    <!--                        <a class="nav-link" href="/example">example</a>-->
+                    <!--                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">about</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid text-center">
+        <div id="headlinetext">
+            Summar'z3 m3
+        </div>
+    </div>
+    <!-- quick descitpion what to do -->
+    <div class="container text-justify">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <p>chose an audio file and get, a transcript of it. just make sure it is
+                    mp3 file</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- upload audio or url -->
+    <div class="container text-justify">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="mb-3">
+                    <form method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" class="form-control" id="formFile">
+                        <input type="submit" class="btn btn-primary mb-3" id="audio-file-button" name="upload_button"
+                            value="upload" onclick="uploadButton()">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="video-url" class="form-label">
+                        <p id="url-label">
+                            no audio file? just paste the url, we will do the re
+                        </p>
+                        <form method="post" enctype="multipart/form-data">
+                            <input type="url" placeholder="video url" name="video_url" id="url" class="form-control">
+                            <input type="submit" id="url-button" name="url_button" value="paste"
+                                onclick="summarizeButton()" class="btn btn-primary mb-3">
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- adding bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+</body>
+
+</html>
