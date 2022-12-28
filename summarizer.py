@@ -1,6 +1,7 @@
 import openai
 import os
 
+
 def request_summary(input_text, temperature=0.1, max_tokens=768):
     openai.api_key = os.getenv("OPENAI_API_KEY")
     summary = ""
@@ -12,9 +13,11 @@ def request_summary(input_text, temperature=0.1, max_tokens=768):
             temperature=temperature,
         )
         summary = summary + str(response.choices[0].text)
+
     return summary
 
-    # GPT3 methods
+
+# GPT3 methods
 def summarize_prompt(prompt):
     return """Could you precisely summarize this audio transcript? 
     \"{}\"""".format(prompt)
