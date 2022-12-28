@@ -60,11 +60,10 @@ def new_index():
                 # download a video and split it
                 new_dir = generate_unique_filename("video")
                 downloader.video_download(url, new_dir)
-                downloader.divide_into_parts(new_dir)
+                # downloader.divide_into_parts(new_dir)
 
                 # generate a transcript file
-                transcripts_videos = downloader.transcribe_all(new_dir)
-                transcript_video = " ".join(transcripts_videos)
+                transcript_video = downloader.transcribe_all(new_dir)
                 save_to_file(transcript_video, "text/" + new_dir + ".txt")
                 # print("text/" + new_dir + ".txt")
                 session['file_name'] = new_dir
