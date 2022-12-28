@@ -43,8 +43,6 @@ def transcribe_all(uniq_dir):
         os.remove(f'{ABS}/{uniq_dir}/{file}')
     os.rmdir(f'{ABS}/{uniq_dir}')
     whole_transcript = " ".join(whole_transcript)
-    print(whole_transcript)
-
     return whole_transcript
     
 
