@@ -29,5 +29,5 @@ def partition_text(transcript, stop_word_num=180):
             # catch the last remaining part of text into another element of the list
             partitioned_text.append(before_stop_word)
 
-    print(partitioned_text)
+    # print(partitioned_text)
     return partitioned_text
