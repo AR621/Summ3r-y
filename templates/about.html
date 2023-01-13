@@ -7,21 +7,46 @@
 <!-- that beutiful text at the top -->
 <div class="container text-center">
     <div class="thebigtext">
-        What is this project?
+        Whait is Summ3r-y?
     </div>
 </div>
 <div class="container text-justify">
     <div class="row justify-content-center">
-        <div class="col-7">
+        <div class="col-10">
+            <h2>Legend</h2>
             <p>This is a small webservice project that allows you to upload a mp3 audio while that then gets transcribed
                 and summarized by openAi models. The project was realized as part of OpenAI Whisper, GPT3, Codex &
                 DALL-E 2 Hackathon together with colonelWalterKurtz and PioSikorski. </p>
-            <a href="https://github.com/AR621/Summ3r-y">https://github.com/AR621/Summ3r-y/a>
+            <a href="https://github.com/AR621/Summ3r-y">Github repository link -> https://github.com/AR621/Summ3r-y/
+            </a>
+
+            <h2>Stack</h2>
+            <p>The project uses following technologies:</p>
+            <ul>
+                <li>Python 3.10</li>
+                <li>Flask for webserver.</li>
+                <li>OpenAi python API for integration with openAi models.<ul>
+                        <li>Whisper for transcribing audio files.</li>
+                        <li>GPT3 for summarizing the given transcript.</li>
+                    </ul>
+                </li>
+                <li>various smaller python packages with common uses such as os.</li>
+
+            </ul>
+
+            <h2>Overview</h2>
+            <p>Main page contains a UI for uploading mp3 files, after submission a request is sent to openAi whisper
+                which transcribes the audio into a text file. The transcript is then forwarded into openAi NLP Curie
+                model which summarizes the given transcript to shorten it. </p>
+            <p>After that is done the results are then displayed in summary page side by side with the transcripts where
+                both files can be downloaded.</p>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-7">
-            <img src="https://fwcdn.pl/webv/41/01/34101/brudny.34101.4.jpg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <img src="https://fwcdn.pl/webv/41/01/34101/brudny.34101.4.jpg" width="100%">
+            </div>
         </div>
     </div>
 </div>
