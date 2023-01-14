@@ -37,6 +37,12 @@ h2 {
     /* padding-left: 18px; */
 }
 
+.thenotsobigtext {
+    font-size: 6vmax;
+    font-family: 'VT323', monospace;
+}
+
+
 body {
     display: flex;
     flex-direction: column;
