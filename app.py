@@ -5,6 +5,7 @@ import requests as req
 from flask import escape, Flask, redirect, render_template, request, url_for, flash, session, send_file
 from werkzeug.utils import secure_filename
 import secrets
+import re
 
 # internal imports
 import partitioner          # for partitioning transcript into smaller subtexts
@@ -56,25 +57,26 @@ def new_index():
             if request.form.get("video_url", "") != "":
                 url = request.form.get("video_url", "")
                 print(url)
+                if re.search(r'((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+', url):
 
-                # download a video and split it
-                new_dir = generate_unique_filename("video")
-                downloader.video_download(url, new_dir)
-                # downloader.divide_into_parts(new_dir)
+                    # download a video and split it
+                    new_dir = generate_unique_filename("video")
+                    downloader.video_download(url, new_dir)
+                    # downloader.divide_into_parts(new_dir)
 
-                # generate a transcript file
-                transcript_video = downloader.transcribe_all(new_dir)
-                save_to_file(transcript_video, "text/" + new_dir + ".txt")
-                # print("text/" + new_dir + ".txt")
-                session['file_name'] = new_dir
-                session['scenerio'] = 'url'
-                return redirect(url_for("summary"))
+                    # generate a transcript file
+                    transcript_video = downloader.transcribe_all(new_dir)
+                    save_to_file(transcript_video, "text/" + new_dir + ".txt")
+                    # print("text/" + new_dir + ".txt")
+                    session['file_name'] = new_dir
+                    session['scenerio'] = 'url'
+                    return redirect(url_for("summary"))
 
+                else:
+                    print("Invalid url")
+                pass
             else:
-                print("an empty string")
-            pass
-        else:
-            pass
+                pass
     return render_template("index.html")
 
 
