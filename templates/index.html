@@ -3,6 +3,7 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
+
 <div class="container-fluid text-center">
     <div id="headlinetext">
         Summar'z3 m3
@@ -31,6 +32,19 @@
             </div>
         </div>
     </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
     <div class="row justify-content-center">
         <div class="col-6">
             <div class="mb-3">

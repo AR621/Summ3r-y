@@ -56,7 +56,6 @@ def new_index():
             print("paste button clicked")
             if request.form.get("video_url", "") != "":
                 url = request.form.get("video_url", "")
-                print(url)
                 if re.search(r'((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+', url):
 
                     # download a video and split it
@@ -73,7 +72,7 @@ def new_index():
                     return redirect(url_for("summary"))
 
                 else:
-                    print("Invalid url")
+                    flash('Invalid url')
                 pass
             else:
                 pass
