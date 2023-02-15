@@ -8,9 +8,13 @@ import secrets
 import re
 
 # internal imports
-import partitioner          # for partitioning transcript into smaller subtexts
-import summarizer           # for summary requests
-import downloader           # for video file handling
+from summ3ry import (
+    partitioner,  # for partitioning transcript into smaller subtexts
+    summarizer,  # for summary requests
+    downloader,  # for video file handling    
+)          
+# import summ3ry.summarizer           
+# import summ3ry.downloader           
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3'}
@@ -166,5 +170,5 @@ def transcribe_external(filename):
         path, 'rb'), 'audio/mpeg'))]
     return req.request("POST", URL, data=payload, files=files)
 
-
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
