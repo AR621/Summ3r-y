@@ -29,10 +29,15 @@ def new_index():
         # upload file scenerio
         if request.form.get("upload_button", "") == "upload":
             print("upload button clicked!")
+
+            # CODE BELOW DOES NOTHING, I WILL LET IT BE IN HERE, BECAUSE I AM AFRAID THAT THE SERVICE WILL COLAPSE
             if "file" not in request.files:
+                print("not uploading a file")
                 flash("no file to upload")
-                return redirect(request.url)
+                return redirect(url_for("summary"))
+
             file = request.files["file"]
+
             if file and allowed_file(file.filename):
                 # save file to uploads directory and generate an unique name for it
                 new_filename = generate_unique_filename(file.filename)
@@ -51,6 +56,9 @@ def new_index():
                 save_to_file(transcript, "text/"+filename[:-4]+".txt")
 
                 return redirect(url_for("summary"))
+
+            else:
+                flash("File is not in allowed format, try .mp3")
 
         # paste url scenerio
         elif request.form.get("url_button", "") == "paste":
