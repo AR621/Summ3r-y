@@ -20,6 +20,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "bajo_bango"
 
+
 @app.route("/", methods=["GET", "POST"])
 def new_index():
     if request.method == "POST":
@@ -54,8 +55,12 @@ def new_index():
         # paste url scenerio
         elif request.form.get("url_button", "") == "paste":
             print("paste button clicked")
+
+            # check if requested url is an empty string
             if request.form.get("video_url", "") != "":
                 url = request.form.get("video_url", "")
+
+                # check if requested url is invaild
                 if re.search(r'((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+', url):
 
                     # download a video and split it
@@ -73,9 +78,8 @@ def new_index():
 
                 else:
                     flash('Invalid url')
-                pass
             else:
-                pass
+                flash('Empty url')
     return render_template("index.html")
 
 
@@ -92,12 +96,13 @@ def summary():
             partitioned_transcript = partitioner.partition_text(transcript)
             summary = summarizer.request_summary(partitioned_transcript)
             filename = session["file_name"]
-            save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
+            save_to_file(summary, "text/" + 'summary_' +
+                         filename[:-4] + ".txt")
             path_to_summary = "text/" + \
                 'summary_' + filename[:-4] + ".txt"
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                               path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
-        
+                                   path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+
         elif session['scenerio'] == 'url':
             # read text from unique text file
             path_to_txt_file = "text/" + session["file_name"] + ".txt"
@@ -107,21 +112,25 @@ def summary():
             partitioned_transcript = partitioner.partition_text(transcript)
             summary = summarizer.request_summary(partitioned_transcript)
             filename = session["file_name"]
-            save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
+            save_to_file(summary, "text/" + 'summary_' +
+                         filename[:-4] + ".txt")
             path_to_summary = "text/" + \
                 'summary_' + filename[:-4] + ".txt"
 
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                                path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+                                   path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
         else:
             return redirect('/')
     else:
         return redirect("/")
 
 # let the user download his individual files with summary or transcript
+
+
 @app.route("/<path:directory>")
 def download_file(directory):
     return send_file(directory, as_attachment=True, attachment_filename=directory)
+
 
 @app.route("/about")
 def about():
@@ -132,8 +141,8 @@ def about():
 def example():
     return render_template("example.html")
 
-# upload file methods
 
+# upload file methods
 
 def allowed_file(filename):
     index_of_dot = filename.find('.')
