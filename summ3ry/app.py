@@ -1,6 +1,3 @@
-import os
-
-import openai
 import requests as req
 from flask import escape, Flask, redirect, render_template, request, url_for, flash, session, send_file
 from werkzeug.utils import secure_filename
