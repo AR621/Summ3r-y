@@ -32,4 +32,4 @@ def test_example(client):
     
 def test_upload_buttons(client):
     response = client.post('/')
-    assert response.status_code == 201
+    assert response.status_code == 200
