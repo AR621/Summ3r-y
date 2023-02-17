@@ -10,7 +10,7 @@ test_url = 'https://www.youtube.com/shorts/N-etpkOVBMM'
 core_url = 'https://summ3ry.r2d2.pl/'
 summary_url = core_url + 'summary'
 
-def endToEndUrl():
+def test_end_to_end_url():
     TIMEOUT = 300
     """
     params:
