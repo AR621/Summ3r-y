@@ -5,4 +5,5 @@ uploads/*.mp3
 /text/*.txt
 /.env
 /env
-
+servervenv
+downloads
