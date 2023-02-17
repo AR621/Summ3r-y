@@ -19,7 +19,11 @@ def test_end_to_end_url():
     Description:
     Test verifies whether a summary is response within specified timeout upon url submission
     """
-    driver = webdriver.Firefox()
+    # add headless options for CI
+    opt = webdriver.FirefoxOptions()
+    opt.add_argument('--headless')
+
+    driver = webdriver.Firefox(options=opt)
     driver.get('https://summ3ry.r2d2.pl/')
     url_from = driver.find_element(By.ID, "url")
     submit_url_btn = driver.find_element(By.ID, "url-button")
