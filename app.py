@@ -58,7 +58,8 @@ def new_index():
                 return redirect(url_for("summary"))
 
             else:
-                flash("File is not in allowed format, try .mp3")
+                flash(
+                    "Empty file or format is not allowed, try to upload file with .mp3 extension")
 
         # paste url scenerio
         elif request.form.get("url_button", "") == "paste":
