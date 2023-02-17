@@ -30,7 +30,7 @@ def divide_into_parts(uniq_dir):
     os.remove(f'{ABS}/{uniq_dir}/audio.mp3')
 
 
-def transcribe_all(uniq_dir):
+def transcribe_all(uniq_dir, model = 'base'):
     #creating expresion for better speed
     p = re.compile(r'\d+')
     whole_transcript = []
@@ -38,7 +38,7 @@ def transcribe_all(uniq_dir):
     #sorting parts list
     parts = sorted(parts, key=lambda s: int(p.search(s).group()))
     for file in parts:
-        text = transcribe(file, uniq_dir)
+        text = transcribe(file, uniq_dir, model=model)
         whole_transcript.append(text)
         os.remove(f'{ABS}/{uniq_dir}/{file}')
     os.rmdir(f'{ABS}/{uniq_dir}')

@@ -73,7 +73,8 @@ body {
 
 
 #url{
-    min-width: 33dvw;
+    /* min-width: 33dvw; */
+    min-width: auto;
 }
 
 #url-button {
