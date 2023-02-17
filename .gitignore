@@ -7,3 +7,4 @@ uploads/*.mp3
 /env
 servervenv
 downloads
+/.vscode
