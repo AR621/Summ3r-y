@@ -36,7 +36,6 @@ def new_index():
             if "file" not in request.files:
                 print("not uploading a file")
                 flash("no file to upload")
-                return redirect(url_for("summary"))
 
             file = request.files["file"]
 
@@ -62,6 +61,7 @@ def new_index():
             else:
                 flash(
                     "Empty file or format is not allowed, try to upload file with .mp3 extension")
+                return redirect(url_for('new_index'))
 
         # paste url scenerio
         elif request.form.get("url_button", "") == "paste":
@@ -89,10 +89,9 @@ def new_index():
 
                 else:
                     flash('Invalid url')
-                pass
             else:
                 flash('Empty url')
-    return render_template("index.html")
+    return render_template("index.html"), 200
 
 
 @app.route("/summary")
@@ -146,12 +145,12 @@ def download_file(directory):
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html"), 200
 
 
 @app.route("/example")
 def example():
-    return render_template("example.html")
+    return render_template("example.html"), 200
 
 
 # upload file methods
