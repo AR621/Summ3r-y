@@ -3,6 +3,12 @@
 This is a small webservice project that allows you to upload a mp3 audio while that then gets transcribed and summarized by openAi models.
 The project was realized as part of OpenAI Whisper, GPT3, Codex & DALL-E 2 Hackathon together with colonelWalterKurtz and PioSikorski.
 
+# Repo layout
+
+- /summ3ry dir contains the webpage
+- /preview contains preview images for use in the README.md file
+- /tests contains testsuite that is used within CI/CD
+
 ## Stack
 
 The project uses following technologies:
