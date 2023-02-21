@@ -45,4 +45,6 @@ that contains you GPT-3 API key - without that your server will crash due to no 
 After that setup you should be able to run the server by simply running
 ```flask run```
 of running app.py using python like this:
-```python ./summ3ry/app.py```.
+```python app.py```.
+
+> do it from 'summ3ry' directory
