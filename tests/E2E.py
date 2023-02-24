@@ -7,7 +7,7 @@ from time import sleep
 from selenium.webdriver.common.by import By
 
 test_url = 'https://www.youtube.com/shorts/N-etpkOVBMM'
-core_url = 'https://summ3ry.r2d2.pl/'
+core_url = 'http://localhost:5000'
 summary_url = core_url + 'summary'
 
 def test_end_to_end_url():
