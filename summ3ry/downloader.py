@@ -8,7 +8,7 @@ import whisper
 # print(f'Loading whisper model "{model}"')
 
 #Absolute to /resources
-ABS = os.path.abspath('downloads')
+ABS = os.path.abspath('uploads')
 # model = whisper.load_model('medium.en')
 
 
@@ -46,18 +46,19 @@ def transcribe_all(uniq_dir, model = 'base'):
     return whole_transcript
     
 
-def transcribe(file, key, LOCAL_MODEL=True, model="base"):
+def transcribe(uniq_dir, file='audio.mp3', LOCAL_MODEL=True, model="base"):
     # for internal model
     if LOCAL_MODEL:
         model = whisper.load_model(model)
-        transcript = model.transcribe(f'{ABS}/{key}/{file}')
+        transcript = model.transcribe(f'{ABS}/{uniq_dir}/{file}')
+        os.rmdir(f'{ABS}/{uniq_dir}')
         return transcript['text']
     # for external model
     else:
         url = "https://whisper.lablab.ai/asr"
         payload={}
         files=[
-        ('audio_file',(file ,open(f'{ABS}/{key}/{file}','rb'),'audio/mpeg'))
+        ('audio_file',(file ,open(f'{ABS}/{uniq_dir}/{file}','rb'),'audio/mpeg'))
         ]
         response = request("POST", url, data=payload, files=files)
         transcript = eval(response.text)['text']

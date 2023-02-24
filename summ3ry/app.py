@@ -5,12 +5,12 @@ import secrets
 import re
 
 # internal imports
-# from summ3ry import (
-#     partitioner,  # for partitioning transcript into smaller subtexts
-#     summarizer,  # for summary requests
-#     downloader,  # for video file handling
-# )
-from . import summarizer, downloader, partitioner
+from summ3ry import (
+    partitioner,  # for partitioning transcript into smaller subtexts
+    summarizer,  # for summary requests
+    downloader,  # for video file handling
+)
+# from . import summarizer, downloader, partitioner
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3'}
@@ -78,7 +78,7 @@ def new_index():
                     # downloader.divide_into_parts(new_dir)
 
                     # generate a transcript file
-                    transcript_video = downloader.transcribe_all(new_dir)
+                    transcript_video = downloader.transcribe(new_dir)
                     save_to_file(transcript_video, "text/" + new_dir + ".txt")
                     # print("text/" + new_dir + ".txt")
                     session['file_name'] = new_dir

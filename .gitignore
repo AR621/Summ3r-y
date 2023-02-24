@@ -6,5 +6,6 @@ summ3ry/text/*.txt
 summ3ry/.env
 summ3ry/env
 servervenv
-summ3ry/downloads
+/env
 /.vscode
+/.pytest_cache
