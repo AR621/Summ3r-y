@@ -10,9 +10,7 @@ import re
 #     summarizer,  # for summary requests
 #     downloader,  # for video file handling
 # )
-import summarizer
-import downloader
-import partitioner
+from . import summarizer, downloader, partitioner
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3'}
