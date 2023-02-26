@@ -35,8 +35,10 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Start Flask Server
       run: |
-        nohup flask run &
+        cd summ3ry
+        nohup flask run > server.log &
         sleep 5
+        cat server.log
     - name: Test with pytest
       run: |
         pytest tests/tests.py
