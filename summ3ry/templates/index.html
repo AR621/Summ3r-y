@@ -12,7 +12,7 @@
 <!-- quick descitpion what to do -->
 <div class="container text-justify">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6">
             <p>chose an audio file and get, a transcript of it. just make sure it is
                 mp3 file</p>
         </div>
@@ -22,7 +22,7 @@
 <!-- upload audio or url -->
 <div class="container text-justify">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="mb-3">
                 <form method="post" enctype="multipart/form-data">
                     <input type="file" name="file" class="form-control" id="formFile">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="mb-3">
                 <label for="video-url" class="form-label">
                     <p id="url-label">
@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="mb-3">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}

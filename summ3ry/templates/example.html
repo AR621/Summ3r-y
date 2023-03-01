@@ -12,32 +12,32 @@
 
 <div class="container text-center">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6 col-sm-10">
             <div class="row justify-content-center">
                 <div class="col">
                     <h2>Example audio</h2>
                     <hr>
                 </div>
                 <div class="embed-responsive">
-                    <iframe class="embed-responsive-item" width="100%" src="https://www.youtube.com/embed/-XiHgh5jUMg"
-                        allowfullscreen></iframe>
+                    <iframe id="example-short-video" class="embed-responsive-item"
+                        src="https://www.youtube.com/embed/-XiHgh5jUMg" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-md-6 col-sm-10">
                     <input type="url" id="example-url" placeholder="https://www.youtube.com/shorts/-XiHgh5jUMg"
-                        class="form-control">
+                        class="form-control" disabled>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-6">
+                <div class="col-md-6 col-sm-10">
                     <button type="button" id="url-button" class="btn btn-primary mb-3"
                         onclick="pasteExample()">paste</button>
                 </div>
             </div>
 
         </div>
-        <div class="col-6" id="example">
+        <div class="col-md-6 col-sm-10" id="example">
             <div class="row justify-content-center">
                 <div class="col">
                     <h2>transcript</h2>

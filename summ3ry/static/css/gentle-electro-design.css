@@ -113,6 +113,12 @@ body {
     display: none;
 }
 
+#example-short-video {
+    width: 100%;
+    max-width: 300px;
+    height: max-content;
+}
+
 /* animation typing zone */
 .typewriter p {
     word-wrap: break-word;
