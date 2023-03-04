@@ -10,7 +10,7 @@ from summ3ry import (
     partitioner,  # for partitioning transcript into smaller subtexts
     summarizer,  # for summary requests
     downloader,  # for video file handling
-    transcriber, # for generating transcripts
+    transcriber,  # for generating transcripts
 )
 # import partitioner, summarizer, downloader
 
@@ -42,7 +42,8 @@ def new_index():
             if file and allowed_file(file.filename):
                 # save file to uploads directory and generate an unique name for it
                 new_filename = generate_unique_filename(file.filename)
-                path_uploaded_file = os.path.join(os.path.join(os.path.join(os.getcwd(), "summ3ry"), "uploads"), new_filename)
+                path_uploaded_file = os.path.join(os.path.join(
+                    os.path.join(os.getcwd(), "summ3ry"), "uploads"), new_filename)
                 file.save(path_uploaded_file)
 
                 # save the name as a cookie for individual client
@@ -52,8 +53,10 @@ def new_index():
                 # transcribe audio
                 filename = session["file_name"]
                 transcript = transcriber.transcribe_audio(path_uploaded_file)
-                path_transcript_dir = os.path.join(os.path.join(os.getcwd(), "summ3ry"), "text")
-                save_to_file(transcript, os.path.join(path_transcript_dir, filename[:-4]+".txt"))
+                path_transcript_dir = os.path.join(
+                    os.path.join(os.getcwd(), "summ3ry"), "text")
+                save_to_file(transcript, os.path.join(
+                    path_transcript_dir, filename[:-4]+".txt"))
 
                 return redirect(url_for("summary"))
 
@@ -80,7 +83,8 @@ def new_index():
 
                     # generate a transcript file
                     transcript_video = downloader.transcribe_all(new_dir)
-                    path_to_transcript_file = os.path.join(os.path.join(os.path.join(os.getcwd(), "summ3ry"), "text"), new_dir+".txt")
+                    path_to_transcript_file = os.path.join(os.path.join(
+                        os.path.join(os.getcwd(), "summ3ry"), "text"), new_dir+".txt")
                     save_to_file(transcript_video, path_to_transcript_file)
                     # print("text/" + new_dir + ".txt")
                     session['file_name'] = new_dir
@@ -100,8 +104,9 @@ def summary():
     if "file_name" in session:
         if session['scenerio'] == 'file':
             # read text from unique text file
-            path_to_txt_file = os.path.join(os.path.join(os.path.join(os.getcwd(), "summ3ry"), "text"), session["file_name"][:-4] + ".txt")
-            
+            path_to_txt_file = os.path.join(os.path.join(os.path.join(
+                os.getcwd(), "summ3ry"), "text"), session["file_name"][:-4] + ".txt")
+
             transcript = read_from_file(path_to_txt_file)
 
             # partition transcript for summary needs
@@ -113,11 +118,13 @@ def summary():
             save_to_file(summary, summary_path + filename[:-4] + ".txt")
             path_to_summary = summary_path + filename[:-4] + ".txt"
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                                   path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+                                   path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}",
+                                   path_to_summary=f"download/{os.path.basename(path_to_summary)}")
 
         elif session['scenerio'] == 'url':
             # read text from unique text file
-            path_to_txt_file = os.path.join(os.path.join(os.path.join(os.getcwd(), "summ3ry"), "text"), session["file_name"] + ".txt")
+            path_to_txt_file = os.path.join(os.path.join(os.path.join(
+                os.getcwd(), "summ3ry"), "text"), session["file_name"] + ".txt")
             transcript = read_from_file(path_to_txt_file)
 
             # partition transcript for summary needs
@@ -131,7 +138,7 @@ def summary():
             path_to_summary = summary_path + filename[:-4] + ".txt"
 
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                                   path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+                                   path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}", path_to_summary=f"download/{os.path.basename(path_to_summary)}")
         else:
             return redirect('/')
     else:
@@ -140,9 +147,11 @@ def summary():
 # let the user download his individual files with summary or transcript
 
 
-@app.route("/<path:directory>")
-def download_file(directory):
-    return send_file(directory, as_attachment=True, attachment_filename=directory)
+@app.route("/download/<basename>")
+def download_file(basename):
+    path = os.path.join(os.path.join(os.path.join(
+        os.getcwd(), "summ3ry"), "text"), basename)
+    return send_file(path, as_attachment=True, attachment_filename=basename)
 
 
 @app.route("/about")
