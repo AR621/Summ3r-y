@@ -9,40 +9,81 @@
     </div>
 </div>
 
+
 <div class="container text-center">
-    <div class="row">
-        <div class="col-6">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-sm-10">
             <div class="row justify-content-center">
-                <h2>Example audio player</h2>
-                <hr>
-                (work in progress amigo!)
+                <div class="col">
+                    <h2>Example audio</h2>
+                    <hr>
+                </div>
+                <div class="embed-responsive">
+                    <iframe id="example-short-video" class="embed-responsive-item"
+                        src="https://www.youtube.com/embed/-XiHgh5jUMg" allowfullscreen></iframe>
+                </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-3">
-                    <button type="button" class="btn btn-dark">Action!</button>
+                <div class="col-md-6 col-sm-10">
+                    <input type="url" id="example-url" placeholder="https://www.youtube.com/shorts/-XiHgh5jUMg"
+                        class="form-control" disabled>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-10">
+                    <button type="button" id="url-button" class="btn btn-primary mb-3"
+                        onclick="pasteExample()">paste</button>
                 </div>
             </div>
 
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-sm-10" id="example">
             <div class="row justify-content-center">
-                <h2>transcript</h2>
-                <hr>
-            </div>
-            <div class="row justify-content-center"></div>
-                 Summarize is a simple web application that allows you to submit an mp3 file or a YouTube video link, which then, through the power of AI, gets summarized for you. You also get a full transcript of the audio or video that you've provided. Both files, the summary and the full transcript can be downloaded after the summarization process is complete.
-
-
-            <div class="row justify-content-center">
-                <h2>summary</h2>
-                <hr>
+                <div class="col">
+                    <h2>transcript</h2>
+                    <hr>
+                </div>
             </div>
             <div class="row justify-content-center">
-Summarize is a web application that allows users to submit mp3 or YouTube links for summarization. The AI then produces a summary of the audio or video, as well as a transcript. The summary and transcript files can be downloaded after the summarization process is complete.
+                <div class="col">
+                    Memois of Sherlock Holmes, by Sir Arthur Conan Doyle, Adventure 6, the Rygate puzzle. It was
+                    some
+                    time
+                    before the health of my friend Mr. Sherlock Holmes recovered from the strain caused by his
+                    immense
+                    exertions
+                    in the spring of 87. The whole question of the Netherlands' Samatra Company and of the colossal
+                    schemes
+                    of
+                    Baron Maapertwee, recent in the minds of the public, and are too intimately concerned with
+                    politics
+                    and
+                    finance to be fitting subjects for this series of sketches. They led, however, in an indirect
+                    fashion to
+                    a
+                    singular and complex problem which gave my friend an opportunity of demonstrating the value of a
+                    fresh
+                    weapon among the many with which he waged his own.
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col">
+                    <h2>summary</h2>
+                    <hr>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col">
+                    The audio transcript is describing how Sherlock Holmes was able to solve a puzzle that was
+                    related
+                    to
+                    the Samatra Company.
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
+<script src="{{url_for('static', filename='js/script.js')}}"></script>
 {% endblock %}

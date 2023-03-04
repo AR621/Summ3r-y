@@ -32,7 +32,7 @@ h2 {
 }
 
 .thebigtext {
-    font-size: 10vmax;
+    font-size: 9vmax;
     font-family: 'VT323', monospace;
     /* padding-left: 18px; */
 }
@@ -67,14 +67,18 @@ body {
 
 }
 
-#video-url{
+#video-url {
     margin-bottom: 0;
 }
 
 
-#url{
+#url {
     /* min-width: 33dvw; */
     min-width: auto;
+}
+
+#example-url {
+    width: 100%;
 }
 
 #url-button {
@@ -101,12 +105,22 @@ body {
 
 }
 
-#url-label{
+#url-label {
     margin-bottom: 8px;
 }
 
+#example {
+    display: none;
+}
+
+#example-short-video {
+    width: 100%;
+    max-width: 300px;
+    height: max-content;
+}
+
 /* animation typing zone */
-.typewriter p{
+.typewriter p {
     word-wrap: break-word;
     overflow: hidden;
     /* Ensures the content is not revealed until the animation */
@@ -143,7 +157,7 @@ body {
     }
 }
 
-.typewriter .thebigtext{
+.typewriter .thebigtext {
     margin: auto;
     max-width: min-content;
     width: min-content;

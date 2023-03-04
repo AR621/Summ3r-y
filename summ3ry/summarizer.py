@@ -15,7 +15,6 @@ def request_summary(input_text, temperature=0.1, max_tokens=768):
                 temperature=temperature,
             )
             summary = summary + str(response.choices[0].text)
-
     return summary
 
 

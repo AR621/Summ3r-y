@@ -6,9 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from time import sleep
 from selenium.webdriver.common.by import By
 
+
 test_url = 'https://www.youtube.com/shorts/N-etpkOVBMM'
-core_url = 'https://summ3ry.r2d2.pl/'
+core_url = 'http://localhost:5000'
 summary_url = core_url + 'summary'
+
 
 def test_end_to_end_url():
     TIMEOUT = 300
@@ -24,7 +26,7 @@ def test_end_to_end_url():
     opt.add_argument('--headless')
 
     driver = webdriver.Firefox(options=opt)
-    driver.get('https://summ3ry.r2d2.pl/')
+    driver.get(core_url)
     url_from = driver.find_element(By.ID, "url")
     submit_url_btn = driver.find_element(By.ID, "url-button")
 
@@ -34,9 +36,9 @@ def test_end_to_end_url():
     # wait until summary page loads
     try:
         summary = WebDriverWait(driver, TIMEOUT).until(expected_conditions.url_changes(summary_url))
-    except TimeoutError: 
+    except TimeoutError:
         print('timeout failed on url submit')
-
+        
     # test transcript downloads
     # TODO
 

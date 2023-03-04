@@ -3,15 +3,16 @@ from flask import escape, Flask, redirect, render_template, request, url_for, fl
 from werkzeug.utils import secure_filename
 import secrets
 import re
+import os
 
 # internal imports
 from summ3ry import (
     partitioner,  # for partitioning transcript into smaller subtexts
     summarizer,  # for summary requests
-    downloader,  # for video file handling    
-)          
-# import summ3ry.summarizer           
-# import summ3ry.downloader           
+    downloader,  # for video file handling
+    transcriber,  # for generating transcripts
+)
+# import partitioner, summarizer, downloader
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTANSIONS = {'.mp3'}
@@ -21,6 +22,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "bajo_bango"
 
+
 @app.route("/", methods=["GET", "POST"])
 def new_index():
     if request.method == "POST":
@@ -29,14 +31,20 @@ def new_index():
         # upload file scenerio
         if request.form.get("upload_button", "") == "upload":
             print("upload button clicked!")
+
+            # CODE BELOW DOES NOTHING, I WILL LET IT BE IN HERE, BECAUSE I AM AFRAID THAT THE SERVICE WILL COLAPSE
             if "file" not in request.files:
+                print("not uploading a file")
                 flash("no file to upload")
-                return redirect(request.url)
+
             file = request.files["file"]
+
             if file and allowed_file(file.filename):
                 # save file to uploads directory and generate an unique name for it
                 new_filename = generate_unique_filename(file.filename)
-                file.save("uploads/"+new_filename)
+                path_uploaded_file = os.path.join(os.path.join(
+                    os.path.join(os.getcwd(), "summ3ry"), "uploads"), new_filename)
+                file.save(path_uploaded_file)
 
                 # save the name as a cookie for individual client
                 session['file_name'] = new_filename
@@ -44,19 +52,28 @@ def new_index():
 
                 # transcribe audio
                 filename = session["file_name"]
-                response = transcribe_external(filename)
-                # extract raw text from the response and save it to txt file in text directory
-                transcript = eval(response.text)['text']
-                # save_to_file(transcript, "text/"+filename[:-4]+".txt")
-                save_to_file(transcript, "text/"+filename[:-4]+".txt")
+                transcript = transcriber.transcribe_audio(path_uploaded_file)
+                path_transcript_dir = os.path.join(
+                    os.path.join(os.getcwd(), "summ3ry"), "text")
+                save_to_file(transcript, os.path.join(
+                    path_transcript_dir, filename[:-4]+".txt"))
 
                 return redirect(url_for("summary"))
+
+            else:
+                flash(
+                    "Empty file or format is not allowed, try to upload file with .mp3 extension")
+                return redirect(url_for('new_index'))
 
         # paste url scenerio
         elif request.form.get("url_button", "") == "paste":
             print("paste button clicked")
+
+            # check if requested url is an empty string
             if request.form.get("video_url", "") != "":
                 url = request.form.get("video_url", "")
+
+                # check if requested url is invaild
                 if re.search(r'((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+', url):
 
                     # download a video and split it
@@ -66,7 +83,9 @@ def new_index():
 
                     # generate a transcript file
                     transcript_video = downloader.transcribe_all(new_dir)
-                    save_to_file(transcript_video, "text/" + new_dir + ".txt")
+                    path_to_transcript_file = os.path.join(os.path.join(
+                        os.path.join(os.getcwd(), "summ3ry"), "text"), new_dir+".txt")
+                    save_to_file(transcript_video, path_to_transcript_file)
                     # print("text/" + new_dir + ".txt")
                     session['file_name'] = new_dir
                     session['scenerio'] = 'url'
@@ -74,10 +93,9 @@ def new_index():
 
                 else:
                     flash('Invalid url')
-                pass
             else:
-                pass
-    return render_template("index.html")
+                flash('Empty url')
+    return render_template("index.html"), 200
 
 
 @app.route("/summary")
@@ -86,55 +104,67 @@ def summary():
     if "file_name" in session:
         if session['scenerio'] == 'file':
             # read text from unique text file
-            path_to_txt_file = "text/" + session["file_name"][:-4] + ".txt"
+            path_to_txt_file = os.path.join(os.path.join(os.path.join(
+                os.getcwd(), "summ3ry"), "text"), session["file_name"][:-4] + ".txt")
+
             transcript = read_from_file(path_to_txt_file)
 
             # partition transcript for summary needs
             partitioned_transcript = partitioner.partition_text(transcript)
             summary = summarizer.request_summary(partitioned_transcript)
             filename = session["file_name"]
-            save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
-            path_to_summary = "text/" + \
-                'summary_' + filename[:-4] + ".txt"
+            path = os.path.join(os.path.join(os.getcwd(), "summ3ry"), "text")
+            summary_path = os.path.join(path, "summary_")
+            save_to_file(summary, summary_path + filename[:-4] + ".txt")
+            path_to_summary = summary_path + filename[:-4] + ".txt"
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                               path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
-        
+                                   path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}",
+                                   path_to_summary=f"download/{os.path.basename(path_to_summary)}")
+
         elif session['scenerio'] == 'url':
             # read text from unique text file
-            path_to_txt_file = "text/" + session["file_name"] + ".txt"
+            path_to_txt_file = os.path.join(os.path.join(os.path.join(
+                os.getcwd(), "summ3ry"), "text"), session["file_name"] + ".txt")
             transcript = read_from_file(path_to_txt_file)
 
             # partition transcript for summary needs
             partitioned_transcript = partitioner.partition_text(transcript)
             summary = summarizer.request_summary(partitioned_transcript)
             filename = session["file_name"]
-            save_to_file(summary, "text/" + 'summary_' + filename[:-4] + ".txt")
-            path_to_summary = "text/" + \
-                'summary_' + filename[:-4] + ".txt"
+            path = os.path.join(os.path.join(os.getcwd(), "summ3ry"), "text")
+            summary_path = os.path.join(path, "summary_")
+            save_to_file(summary, summary_path +
+                         filename[:-4] + ".txt")
+            path_to_summary = summary_path + filename[:-4] + ".txt"
 
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                                path_to_transcript=path_to_txt_file, path_to_summary=path_to_summary)
+                                   path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}", path_to_summary=f"download/{os.path.basename(path_to_summary)}")
         else:
             return redirect('/')
     else:
         return redirect("/")
 
 # let the user download his individual files with summary or transcript
-@app.route("/<path:directory>")
-def download_file(directory):
-    return send_file(directory, as_attachment=True, attachment_filename=directory)
+
+
+@app.route("/download/<basename>")
+def download_file(basename):
+    path = os.path.join(os.path.join(os.path.join(
+        os.getcwd(), "summ3ry"), "text"), basename)
+    return send_file(path, as_attachment=True, attachment_filename=basename)
+
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html"), 200
 
 
 @app.route("/example")
 def example():
-    return render_template("example.html")
+    return render_template("example.html"), 200
+
 
 # upload file methods
-
 
 def allowed_file(filename):
     index_of_dot = filename.find('.')
@@ -166,6 +196,7 @@ def transcribe_external(filename):
     files = [('audio_file', (filename, open(
         path, 'rb'), 'audio/mpeg'))]
     return req.request("POST", URL, data=payload, files=files)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

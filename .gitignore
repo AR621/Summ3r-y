@@ -1,9 +1,11 @@
 
 .idea/*
 __pycache__
-uploads/*.mp3
-/text/*.txt
-/.env
-/env
+summ3ry/uploads/*.mp3
+summ3ry/text/*.txt
+summ3ry/.env
+summ3ry/env
 servervenv
-downloads
+/env
+/.vscode
+/.pytest_cache
