@@ -3,11 +3,11 @@
 This is a small webservice project that allows you to upload a mp3 audio while that then gets transcribed and summarized by openAi models.
 The project was realized as part of OpenAI Whisper, GPT3, Codex & DALL-E 2 Hackathon together with colonelWalterKurtz and PioSikorski.
 
-# Repo layout
+## Repo layout
 
-- /summ3ry dir contains the webpage
-- /preview contains preview images for use in the README.md file
-- /tests contains testsuite that is used within CI/CD
+- ***/summ3ry*** dir contains the flask service application
+- ***/preview*** contains preview images for use in the README.md file
+- ***/tests*** contains testsuite that is used within CI/CD
 
 ## Stack
 
@@ -32,19 +32,16 @@ After that is done the results are then displayed in summary page side by side w
 
 ## Setup
 
-In order to set up the environment for this project you will need to install required packages in **requirements.txt** file as well as add an ".env" file containing a variable called:
+In order to set up the environment for this project you will need to install required packages in **requirements.txt** file as well as add an "**.env**" file containing a variable called:
 
-```
-OPENAI_API_KEY=[you key here]
-```
+```OPENAI_API_KEY=[you key here]```
 
-> **just make sure** your python virtual environment and '.env' file are in './summ3ry' directory
+that contains you GPT-3 API key - **without that your server will crash due to no valid access to the OpenAI 3GPT API**
 
-that contains you GPT-3 API key - without that your server will crash due to no valid access to the OpenAI 3GPT API
+After that setup you should be able to run the server by simply running:
 
-After that setup you should be able to run the server by simply running
-```flask run```
-of running app.py using python like this:
-```python app.py```.
+```$flask run```
 
-> do it from 'summ3ry' directory
+or running *setup.py* using python like this:
+
+```$python setup.py```
