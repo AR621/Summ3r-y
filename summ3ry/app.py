@@ -13,7 +13,6 @@ from summ3ry import (
 )
 
 ALLOWED_EXTANSIONS = {'.mp3'}
-EXTERNAL_TRANSCRIBE_URL = "https://whisper.lablab.ai/asr"
 
 # paths to directories
 UPLOAD_FOLDER = os.path.join(os.path.join(os.getcwd(), "summ3ry"), "uploads")
@@ -183,14 +182,6 @@ def save_to_file(text, filename):
 def read_from_file(filename):
     with open(filename, 'r', encoding="utf-8") as file:
         return file.read()
-
-
-def transcribe_external(filename):
-    path = os.path.join(UPLOAD_FOLDER, filename)
-    payload = {}
-    files = [('audio_file', (filename, open(
-        path, 'rb'), 'audio/mpeg'))]
-    return req.request("POST", EXTERNAL_TRANSCRIBE_URL, data=payload, files=files)
 
 
 if __name__ == '__main__':
