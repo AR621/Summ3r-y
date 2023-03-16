@@ -48,12 +48,14 @@
             </div>
         </div>
     </div>
+
+    <!-- there is a flash message zone, stay aware for warnings -->
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="mb-3">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                <ul class=flashes>
+                <ul class=flashes id="close-btn">
                     {% for message in messages %}
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>{{ message }}</strong>
@@ -69,6 +71,16 @@
     </div>
 </div>
 
+<!-- script below make flash message disappears after 5 seconds -->
+<script>
+    window.onload = function(){
+        console.log('hi mom!');
+        var button = document.getElementById("close-btn");
+        setTimeout(function() {
+            button.style.display = "none";
+        }, 5000);
+    }
+</script>
 
 <script src="{{url_for('static', filename='js/script.js')}}"></script>
 {% endblock %}
