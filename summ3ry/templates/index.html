@@ -73,12 +73,14 @@
 
 <!-- script below make flash message disappears after 5 seconds -->
 <script>
-    window.onload = function(){
-        console.log('hi mom!');
-        var button = document.getElementById("close-btn");
-        setTimeout(function() {
-            button.style.display = "none";
-        }, 5000);
+    window.onload = function () {
+        if (document.getElementById("close-btn")) {
+            console.log('hi mom!');
+            var button = document.getElementById("close-btn");
+            setTimeout(function () {
+                button.style.display = "none";
+            }, 5000);
+        }
     }
 </script>
 
