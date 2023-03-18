@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 
 test_url = 'https://www.youtube.com/shorts/N-etpkOVBMM'
 core_url = 'http://localhost:5000'
-summary_url = core_url + 'summary'
+summary_url = '/summary'
 
 
 def test_end_to_end_url():
@@ -34,10 +34,7 @@ def test_end_to_end_url():
     url_from.send_keys(test_url)
     submit_url_btn.click()
     # wait until summary page loads
-    try:
-        summary = WebDriverWait(driver, TIMEOUT).until(expected_conditions.url_changes(summary_url))
-    except TimeoutError:
-        print('timeout failed on url submit')
+    summary = WebDriverWait(driver, TIMEOUT).until(expected_conditions.url_contains(summary_url))
         
     # test transcript downloads
     # TODO
