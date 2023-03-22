@@ -9,3 +9,4 @@ servervenv
 /env
 /.vscode
 /.pytest_cache
+*.log

@@ -93,50 +93,69 @@ def new_index():
                     flash('Invalid url')
             else:
                 flash('Empty url')
-    return render_template("index.html"), 200
+    return render_template("index.html", latest_summary=check_if_last_summary_valid()), 200
 
 
 @app.route("/summary")
 # the right one
 def summary():
     if "file_name" in session:
-        if session['scenerio'] == 'file':
-            # read text from unique text file
-            path_to_txt_file = os.path.join(
-                TEXT_FOLDER, session["file_name"][:-4] + ".txt")
-            transcript = read_from_file(path_to_txt_file)
-
-            # partition transcript for summary needs
-            partitioned_transcript = partitioner.partition_text(transcript)
-            summary = summarizer.request_summary(partitioned_transcript)
+        if check_if_transcript_and_summary_exist(session["file_name"]):
             filename = session["file_name"]
-            # file operations
-            summary_path = os.path.join(TEXT_FOLDER, "summary_")
-            path_to_summary_file = summary_path + filename[:-4] + ".txt"
-            save_to_file(summary, path_to_summary_file)
+            transcript_file_name = filename + ".txt"
+            summary_file_name = 'summary_'+filename[:-4] + ".txt"
+
+            transcript_path = os.path.join(TEXT_FOLDER, transcript_file_name)
+            summary_path = os.path.join(TEXT_FOLDER, summary_file_name)
+            transcript = read_from_file(transcript_path)
+            summary = read_from_file(summary_path)
             return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                                   path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}",
-                                   path_to_summary=f"download/{os.path.basename(path_to_summary_file)}")
-
-        elif session['scenerio'] == 'url':
-            # read text from unique text file
-            path_to_txt_file = os.path.join(
-                TEXT_FOLDER, session["file_name"] + ".txt")
-            transcript = read_from_file(path_to_txt_file)
-
-            # partition transcript for summary needs
-            partitioned_transcript = partitioner.partition_text(transcript)
-            summary = summarizer.request_summary(partitioned_transcript)
-            filename = session["file_name"]
-            # file operations
-            summary_path = os.path.join(TEXT_FOLDER, "summary_")
-            path_to_summary_file = summary_path + filename[:-4] + ".txt"
-            save_to_file(summary, path_to_summary_file)
-
-            return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
-                                   path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}", path_to_summary=f"download/{os.path.basename(path_to_summary_file)}")
+                                   path_to_transcript=f"download/{os.path.basename(transcript_path)}", path_to_summary=f"download/{os.path.basename(summary_path)}", latest_summary=check_if_last_summary_valid())
         else:
-            return redirect('/')
+            if check_if_transcript_file_exists(session["file_name"]):
+                if session['scenerio'] == 'file':
+                    # read text from unique text file
+                    path_to_txt_file = os.path.join(
+                        TEXT_FOLDER, session["file_name"][:-4] + ".txt")
+                    transcript = read_from_file(path_to_txt_file)
+
+                    # partition transcript for summary needs
+                    partitioned_transcript = partitioner.partition_text(
+                        transcript)
+                    summary = summarizer.request_summary(
+                        partitioned_transcript)
+                    filename = session["file_name"]
+                    # file operations
+                    summary_path = os.path.join(TEXT_FOLDER, "summary_")
+                    path_to_summary_file = summary_path + \
+                        filename[:-4] + ".txt"
+                    save_to_file(summary, path_to_summary_file)
+                    return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
+                                           path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}",
+                                           path_to_summary=f"download/{os.path.basename(path_to_summary_file)}", latest_summary=check_if_last_summary_valid())
+
+                elif session['scenerio'] == 'url':
+                    # read text from unique text file
+                    path_to_txt_file = os.path.join(
+                        TEXT_FOLDER, session["file_name"] + ".txt")
+                    transcript = read_from_file(path_to_txt_file)
+
+                    # partition transcript for summary needs
+                    partitioned_transcript = partitioner.partition_text(
+                        transcript)
+                    summary = summarizer.request_summary(
+                        partitioned_transcript)
+                    filename = session["file_name"]
+                    # file operations
+                    summary_path = os.path.join(TEXT_FOLDER, "summary_")
+                    path_to_summary_file = summary_path + \
+                        filename[:-4] + ".txt"
+                    save_to_file(summary, path_to_summary_file)
+
+                    return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
+                                           path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}", path_to_summary=f"download/{os.path.basename(path_to_summary_file)}", latest_summary=check_if_last_summary_valid())
+            else:
+                return redirect('/')
     else:
         return redirect("/")
 
@@ -151,12 +170,12 @@ def download_file(basename):
 
 @app.route("/about")
 def about():
-    return render_template("about.html"), 200
+    return render_template("about.html", latest_summary=check_if_last_summary_valid()), 200
 
 
 @app.route("/example")
 def example():
-    return render_template("example.html"), 200
+    return render_template("example.html", latest_summary=check_if_last_summary_valid()), 200
 
 
 # upload file method
@@ -182,6 +201,35 @@ def save_to_file(text, filename):
 def read_from_file(filename):
     with open(filename, 'r', encoding="utf-8") as file:
         return file.read()
+
+
+def check_if_transcript_and_summary_exist(filename) -> bool:
+    content_of_TEXT_FOLDER = os.listdir(TEXT_FOLDER)
+    summary_file = 'summary_'+filename[:-4] + ".txt"
+    transcript_file = filename + ".txt"
+    if summary_file in content_of_TEXT_FOLDER and transcript_file in content_of_TEXT_FOLDER:
+        return True
+    else:
+        return False
+
+
+def check_if_transcript_file_exists(filename) -> bool:
+    content_of_TEXT_FOLDER = os.listdir(TEXT_FOLDER)
+    transcript_file = filename + ".txt"
+    if transcript_file in content_of_TEXT_FOLDER:
+        return True
+    else:
+        return False
+
+
+def check_if_last_summary_valid() -> bool:
+    if 'file_name' in session:
+        if check_if_transcript_and_summary_exist(session["file_name"]):
+            return True
+        else:
+            return False
+    else:
+        return False
 
 
 if __name__ == '__main__':

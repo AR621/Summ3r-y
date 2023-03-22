@@ -41,6 +41,11 @@
                     <li class="nav-item">
                         <a class="nav-link {% if current_url == '/about' %}active{% endif %}" href="/about">about</a>
                     </li>
+                    {% if latest_summary == true %}
+                    <li>
+                        <a class="nav-link {% if current_url == '/summary' %}active{% endif %}" href="/summary">last_summary</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
