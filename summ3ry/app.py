@@ -56,6 +56,7 @@ def new_index():
                 transcript = transcriber.transcribe_audio(path_uploaded_file)
                 save_to_file(transcript, os.path.join(
                     TEXT_FOLDER, filename[:-4]+".txt"))
+                session['file_name'] = session['file_name'][:-4]
 
                 return redirect(url_for("summary"))
 
@@ -116,7 +117,7 @@ def summary():
                 if session['scenerio'] == 'file':
                     # read text from unique text file
                     path_to_txt_file = os.path.join(
-                        TEXT_FOLDER, session["file_name"][:-4] + ".txt")
+                        TEXT_FOLDER, session["file_name"]+ ".txt")
                     transcript = read_from_file(path_to_txt_file)
 
                     # partition transcript for summary needs
@@ -155,8 +156,10 @@ def summary():
                     return render_template("summary.html", audio_transcript=transcript, summary_text=summary,
                                            path_to_transcript=f"download/{os.path.basename(path_to_txt_file)}", path_to_summary=f"download/{os.path.basename(path_to_summary_file)}", latest_summary=check_if_last_summary_valid())
             else:
+                print('no transcript file')
                 return redirect('/')
     else:
+        print('no file name in session')
         return redirect("/")
 
 # let the user download his individual files with summary or transcript
@@ -214,8 +217,12 @@ def check_if_transcript_and_summary_exist(filename) -> bool:
 
 
 def check_if_transcript_file_exists(filename) -> bool:
+    print(f'{filename}')
+    print('####')
     content_of_TEXT_FOLDER = os.listdir(TEXT_FOLDER)
     transcript_file = filename + ".txt"
+    print(content_of_TEXT_FOLDER)
+    print(f'{transcript_file}')
     if transcript_file in content_of_TEXT_FOLDER:
         return True
     else:
