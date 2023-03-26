@@ -41,4 +41,5 @@ jobs:
     - name: Test with pytest
       run: |
         pytest tests/tests.py
+        pytest tests/tests_flask.py
         pytest tests/E2E.py
