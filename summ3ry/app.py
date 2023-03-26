@@ -1,4 +1,3 @@
-import requests as req
 from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file
 import secrets
 import re
@@ -12,7 +11,7 @@ from summ3ry import (
     transcriber,  # for generating transcripts
 )
 
-ALLOWED_EXTANSIONS = {'.mp3'}
+ALLOWED_EXTANSIONS = ('.mp3')
 
 # paths to directories
 UPLOAD_FOLDER = os.path.join(os.path.join(os.getcwd(), "summ3ry"), "uploads")
@@ -81,8 +80,9 @@ def new_index():
                     downloader.video_download(url, new_dir)
                     # downloader.divide_into_parts(new_dir)
 
+                    file_path = os.path.join(DOWNLOAD_FOLDER, new_dir)
                     # generate a transcript file
-                    transcript_video = downloader.transcribe_all(new_dir)
+                    transcript_video = transcriber.transcribe_audio(file_path)
                     path_to_transcript_file = os.path.join(
                         TEXT_FOLDER, new_dir+".txt")
                     save_to_file(transcript_video, path_to_transcript_file)
