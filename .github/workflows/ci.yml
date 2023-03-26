@@ -34,13 +34,15 @@ jobs:
         pip install selenium
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         sudo apt install ffmpeg
+    - name: Test with pytest
+      run: |
+        pytest tests/tests.py
+        pytest tests/tests_flask.py
     - name: Start Flask Server
       run: |
         nohup python setup.py > server.log &
         sleep 5
         cat server.log
-    - name: Test with pytest
+    - name: Test with selenium
       run: |
-        pytest tests/tests.py
-        pytest tests/tests_flask.py
         pytest tests/E2E.py
