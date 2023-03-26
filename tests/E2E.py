@@ -24,7 +24,7 @@ def test_E2E_url():
     """
     # add headless options for CI
     opt = webdriver.ChromeOptions()
-    # opt.add_argument('--headless')
+    opt.add_argument('--headless')
     driver = webdriver.Chrome(options=opt)
     driver.get(CORE_URL)
     
@@ -57,7 +57,7 @@ def test_E2E_file():
     """
     # add headless options for CI
     opt = webdriver.ChromeOptions()
-    # opt.add_argument('--headless')
+    opt.add_argument('--headless')
     driver = webdriver.Chrome(options=opt)
     driver.get(CORE_URL)
     
