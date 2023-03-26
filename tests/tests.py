@@ -1,90 +1,33 @@
+import os
 import pytest
-from summ3ry.app import app
+
+from summ3ry import downloader, transcriber, summarizer
+
+TEST_DIR = os.path.join(downloader.ABS, 'test')
+TEST_FILE = os.path.join(TEST_DIR, 'audio.mp3')
+ABS = os.path.join(os.getcwd(), 'tests')
+MP3_FILE = os.path.join(ABS, 'sample.mp3')
+TXT_FILE = os.path.join(ABS, 'sample.txt')
 
 
-@pytest.fixture
-def app_():
-    app.config.update({
-        "TESTING": True,
-    })
-    yield app
+@pytest.fixture(scope="function")
+def clean_up_directory(request):
+    def remove_directory():
+        os.remove(TEST_FILE)
+        os.rmdir(TEST_DIR)
+    request.addfinalizer(remove_directory) 
 
-
-@pytest.fixture()
-def client(app_):
-    return app_.test_client()
-
-
-def test_home_page(client):
-    response = client.get('/')
-    assert response.status_code == 200
-    assert b'<title>Index</title>' in response.data
-
-
-def test_about(client):
-    response = client.get('/about')
-    assert response.status_code == 200
-    assert b'<title>About</title>' in response.data
-
-    
-def test_example(client):
-    response = client.get('/example')
-    assert response.status_code == 200
-    assert b'<title>Example</title>' in response.data
-
-
-def test_empty_file_upload(client):
-    file_data = ''
-    response = client.post('/',
-                           data=dict(upload_button='upload', file=file_data, content_type='multipart/form-data', follow_redirects=True))
-    assert response.status_code == 400
-
-
-# FAILS due to no flash msg in response (redirection)
-# def test_invalid_file_upload(client):
-#     file_data = open('../tests/sample.txt', 'rb')
-#     response = client.post('/',
-#                            data=dict(upload_button='upload', file=file_data, content_type='multipart/form-data', follow_redirects=True))
-#     assert response.status_code == 302
-#     assert b'<strong>Empty file or format is not allowed, try to upload file with .mp3 extension</strong>' in response.data
-
-
-# FAILS due to long redirection
-# def test_file_upload(client):
-#     file_data = open('../tests/sample.mp3', 'rb')
-#     response = client.post('/',
-#                            data=dict(upload_button='upload', file=file_data), content_type='multipart/form-data', follow_redirects=True)
-#     assert response.status_code == 200
-#     assert b'<title>Summary</title>' in response.data
-#     assert b'<a>Transcript</a>' in response.data
-#     assert b'<a>Summary</a>' in response.data
-
-
-def test_empty_url_paste(client):
-    url_data = ''
-    response = client.post('/',
-                           data=dict(url_button='paste', file=url_data, content_type='multipart/form-data', follow_redirects=True))
-    assert response.status_code == 200
-    assert b'<strong>Empty url</strong>' in response.data
-  
-    
-# FAILS due to no flash msg in response (redirection)
-# def test_invalid_url_paste(client):
-#     url_data = 'https://github.com/AR621/Summ3r-y'
-#     response = client.post('/',
-#                            data=dict(url_button='paste', file=url_data, content_type='multipart/form-data', follow_redirects=True))
-#     assert response.status_code == 200
-#     assert b'<strong>Invalid url</strong>' in response.data
-
-
-# FAILS due to long redirection
-# def test_url_paste(client):
-#     url_data = 'https://youtu.be/B_fXSJ97H0E'
-#     response = client.post('/',
-#                            data=dict(url_button='paste', url=url_data, content_type='multipart/form-data', follow_redirects=True))
-#     assert response.status_code == 200
-#     assert b'<title>Summary</title>' in response.data
-#     assert b'<a>Transcript</a>' in response.data
-#     assert b'<a>Summary</a>' in response.data
+        
+def test_downloader(clean_up_directory):
+    downloader.video_download('https://www.youtube.com/watch?v=B_fXSJ97H0E', 'test')
+    assert os.path.exists(TEST_FILE)
     
     
+def test_transcriber():
+    transcript = transcriber.transcribe_audio(MP3_FILE)
+    assert transcript
+
+
+def test_summarizer():
+    summary = summarizer.request_summary(TXT_FILE)
+    assert summary
