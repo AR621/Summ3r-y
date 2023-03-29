@@ -38,10 +38,7 @@ jobs:
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        echo "OPENAI_API_KEY=$OPENAI_API_KEY" > .env
-    - name: Debug environment variables
-      run: |
-        echo "OPENAI_API_KEY=${OPENAI_API_KEY:0:4}****${OPENAI_API_KEY: -4}"
+        echo "OPENAI_API_KEY=${OPENAI_API_KEY}" > .env
     - name: Test with pytest
       run: |
         pytest tests/tests.py
