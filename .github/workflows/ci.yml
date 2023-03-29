@@ -38,7 +38,10 @@ jobs:
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        # Just an empty run as syntax requires every step with run
+        # create .env file with api key
+        cat <<EOF > .env
+        OPENAI_API_KEY=${OPENAI_API_KEY}
+        EOF
     - name: Test with pytest
       run: |
         pytest tests/tests.py
