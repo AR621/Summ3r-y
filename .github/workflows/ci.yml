@@ -37,6 +37,8 @@ jobs:
     - name: Set up environment variables
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        # Just an empty run as syntax requires every step with run
     - name: Test with pytest
       run: |
         pytest tests/tests.py
