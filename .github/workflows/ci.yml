@@ -38,7 +38,6 @@ jobs:
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        # create .env file with api key
         cat <<EOF > .env
         OPENAI_API_KEY=${OPENAI_API_KEY}
         EOF
