@@ -34,7 +34,7 @@ jobs:
         pip install selenium
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         sudo apt install ffmpeg
-    - name: Set up environment variables and .env file
+    - name: Set up environment variables and summ3ry/.env file
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
